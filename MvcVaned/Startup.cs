@@ -100,7 +100,7 @@ namespace MvcVanced
 
                 var chkUser = UserManager.Create(user, userPWD);
 
-                //Add default User to Role Admin   
+                //Add default User to Role Admin
                 if (chkUser.Succeeded) {
                     var result1 = UserManager.AddToRole(user.Id, "Admin");
 

@@ -1,4 +1,5 @@
-﻿using MvcVanced.Helpers;
+﻿using GoogleDrive.Models;
+using MvcVanced.Helpers;
 using MvcVanced.Models;
 using System;
 using System.Collections.Generic;
@@ -30,20 +31,21 @@ namespace MvcVanced.Controllers
             var files = Global.GoogleClient.FetchAllFiles();
 
             var Ids = new HashSet<string>(dbFiles.Select(x => x.FileID));
+            var Versions = new HashSet<string>(dbFiles.Select(x => x.Version));
             var model = new DriveModel();
-            model.NonRoot = files["NONROOT"];
-            model.NonRoot_Beta = files["NONROOT_BETA"];
-            model.Root = files["ROOT"];
-            model.Root_Beta = files["ROOT_BETA"];
-            model.Magisk = files["MAGISK"];
-            model.Magisk_Beta = files["MAGISK_BETA"];
+            model.NonRoot = new List<DriveFile>(files["NONROOT"]);
+            model.NonRoot_Beta = new List<DriveFile>(files["NONROOT_BETA"]);
+            model.Root = new List<DriveFile>(files["ROOT"]);
+            model.Root_Beta = new List<DriveFile>(files["ROOT_BETA"]);
+            model.Magisk = new List<DriveFile>(files["MAGISK"]);
+            model.Magisk_Beta = new List<DriveFile>(files["MAGISK_BETA"]);
 
-            model.NonRoot.RemoveAll(p => Ids.Contains(p.FileID));
-            model.NonRoot_Beta.RemoveAll(p => Ids.Contains(p.FileID));
-            model.Root.RemoveAll(p => Ids.Contains(p.FileID));
-            model.Root_Beta.RemoveAll(p => Ids.Contains(p.FileID));
-            model.Magisk.RemoveAll(p => Ids.Contains(p.FileID));
-            model.Magisk_Beta.RemoveAll(p => Ids.Contains(p.FileID));
+            model.NonRoot.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
+            model.NonRoot_Beta.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
+            model.Root.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
+            model.Root_Beta.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
+            model.Magisk.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
+            model.Magisk_Beta.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
 
             return View(model);
         }

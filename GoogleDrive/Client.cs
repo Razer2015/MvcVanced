@@ -32,7 +32,6 @@ namespace GoogleDrive
         };
         Dictionary<string, List<DriveFile>> FetchedFiles;
 
-
         string BasePath;
         DriveService Service;
 
@@ -98,8 +97,28 @@ namespace GoogleDrive
                         deletedIDs.Add(change.FileId);
                     }
 
-                    //// If file is not deleted
-                    //var file = FetchFile(change.FileId);
+                    // Something changed in the tracked folders
+                    if (Folders.Any(x => x.Value.Equals(change.FileId))) {
+                        var beforeFetch = new Dictionary<string, List<DriveFile>>(FetchedFiles);
+                        var fetchedFiles = RefreshFolder(change.FileId);
+                        foreach (var kvp in beforeFetch) {
+                            if (!fetchedFiles.ContainsKey(kvp.Key)) {
+                                continue;
+                            }
+
+                            var newKVP = fetchedFiles[kvp.Key];
+                            foreach (var item in kvp.Value) {
+                                if (!newKVP.Any(x => x.FileID.Equals(item.FileID) && x.Version.Equals(item.Version))) {
+                                    deletedIDs.Add(item.FileID);
+                                }
+                            }
+                        }
+                    }
+
+                    // If file is not deleted
+                    if (change.File.MimeType.Equals("application/vnd.android.package-archive") || change.File.MimeType.Equals("application/x-zip-compressed")) {
+                        FetchFile(change.FileId);
+                    }
                 }
                 if (changes.NewStartPageToken != null) {
                     // Last page, save this token for the next polling interval
@@ -113,46 +132,6 @@ namespace GoogleDrive
         #endregion
 
         #region Get Files
-        //public Dictionary<string, List<DriveFile>> FetchAllFiles() {
-        //    if (Service == null) {
-        //        throw new Exception("Error: DriveService is null. Have you forgot to connect?");
-        //    }
-
-        //    var output = new Dictionary<string, List<DriveFile>>();
-        //    foreach (var category in Folders) {
-        //        // Define parameters of request.
-        //        FilesResource.ListRequest folderRequest = Service.Files.List();
-        //        folderRequest.Fields = "nextPageToken, files(id, name, size, shared, parents, mimeType)";
-        //        folderRequest.Q = $"trashed=false and '{category.Value}' in parents";
-
-
-        //        var results = folderRequest.Execute().Files;
-        //        List<DriveFile> driveFiles = new List<DriveFile>();
-        //        if (results != null && results.Count > 0) {
-        //            var folders = results.Where(x => x.MimeType.Equals("application/vnd.google-apps.folder", 
-        //                StringComparison.OrdinalIgnoreCase)).ToArray();
-        //            var files = results.Where(x => x.MimeType.Equals("application/vnd.android.package-archive",
-        //                StringComparison.OrdinalIgnoreCase) || x.MimeType.Equals("application/x-zip-compressed",
-        //                StringComparison.OrdinalIgnoreCase)).ToArray();
-
-        //            if (files != null && files.Length > 0) {
-        //                foreach (var file in files) {
-        //                    driveFiles.Add(new DriveFile {
-        //                        FileID = file.Id,
-        //                        Name = file.Name,
-        //                        Size = file.Size,
-        //                        Version = folders.FirstOrDefault(x => x.Id.Equals(file.Parents[0])).Name
-        //                    });
-        //                }
-        //            }
-        //        }
-
-        //        output.Add(category.Key, driveFiles);
-        //    }
-
-        //    return (output);
-        //}
-
         public Dictionary<string, List<DriveFile>> FetchAllFiles(bool forceFetch = false) {
             if (FetchedFiles != null && !forceFetch) {
                 return (FetchedFiles);
@@ -216,6 +195,7 @@ namespace GoogleDrive
 
             // List files
             var files = fileRequest.Execute().Files;
+            files = files.Where(x => x.Id.Equals(fileID)).ToList();
             if (files != null && files.Count > 0) {
                 // Define parameters of request.
                 var folderRequest = Service.Files.List();
@@ -252,6 +232,49 @@ namespace GoogleDrive
             }
 
             return (null);
+        }
+
+        public Dictionary<string, List<DriveFile>> RefreshFolder(string folderId) {
+            if (Service == null) {
+                throw new Exception("Error: DriveService is null. Have you forgot to connect?");
+            }
+
+            // Define parameters of request.
+            FilesResource.ListRequest folderRequest = Service.Files.List();
+            folderRequest.Fields = "nextPageToken, files(id, name)";
+            folderRequest.Q = $"mimeType='application/vnd.google-apps.folder' and trashed=false and '{folderId}' in parents";
+
+            // List folders
+            List<DriveFile> driveFiles = new List<DriveFile>();
+            var folders = folderRequest.Execute().Files;
+            if (folders != null && folders.Count > 0) {
+                foreach (var folder in folders) {
+                    // Define parameters of request.
+                    var fileRequest = Service.Files.List();
+                    fileRequest.Fields = "nextPageToken, files(id, name, size, shared, parents, mimeType)";
+                    fileRequest.Q = $"mimeType!='application/vnd.google-apps.folder' and trashed=false and '{folder.Id}' in parents";
+
+                    // List files
+                    var files = fileRequest.Execute().Files;
+                    if (files != null && files.Count > 0) {
+                        foreach (var file in files) {
+                            driveFiles.Add(new DriveFile {
+                                FileID = file.Id,
+                                Name = file.Name,
+                                Size = file.Size,
+                                Version = folder.Name
+                            });
+                        }
+                    }
+                }
+            }
+
+            var key = Folders.First(x => x.Value.Equals(folderId)).Key ?? "";
+            if (FetchedFiles.ContainsKey(key)) {
+                FetchedFiles[key] = driveFiles;
+            }
+
+            return (FetchedFiles);
         }
 
         /// <summary>
