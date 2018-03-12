@@ -1,0 +1,41 @@
+﻿@using MvcVanced.Models
+@model DriveModel
+
+@{
+    ViewBag.Title = "Google Drive";
+    
+}
+
+<div class="jumbotron">
+    <h1>Untracked Google Drive files</h1>
+</div>
+
+@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+    <h2>Non-Root</h2>
+    <div class="nonroot">
+        @Html.Partial("_Entries", Model.NonRoot, new ViewDataDictionary { { "id", "nonroot" } })
+    </div>
+    <h2>Non-Root Beta</h2>
+    <div class="nonroot_beta">
+        @Html.Partial("_Entries", Model.NonRoot_Beta, new ViewDataDictionary { { "id", "nonroot_beta" } })
+    </div>
+    <h2>Root</h2>
+    <div class="root">
+        @Html.Partial("_Entries", Model.Root, new ViewDataDictionary { { "id", "root" } })
+    </div>
+    <h2>Root Beta</h2>
+    <div class="root_beta">
+        @Html.Partial("_Entries", Model.Root_Beta, new ViewDataDictionary { { "id", "root_beta" } })
+    </div>
+    <h2>Magisk</h2>
+    <div class="magisk">
+        @Html.Partial("_Entries", Model.Magisk, new ViewDataDictionary { { "id", "magisk" } })
+    </div>
+    <h2>Magisk Beta</h2>
+    <div class="magisk_beta">
+        @Html.Partial("_Entries", Model.Magisk_Beta, new ViewDataDictionary { { "id", "magisk_beta" } })
+    </div>
+}
+
+
+

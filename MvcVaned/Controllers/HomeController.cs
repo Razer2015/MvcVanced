@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MvcVaned.Controllers
+namespace MvcVanced.Controllers
 {
     public class HomeController : Controller
     {
@@ -19,7 +19,7 @@ namespace MvcVaned.Controllers
         }
 
         public ActionResult Contact() {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "How to reach us?";
 
             return View();
         }

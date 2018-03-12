@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MvcVanced.Models.APK>
+
+<table class="table" id="@ViewData["id"]">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Version)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Architecture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinimumAPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+            <th>
+                @Html.DisplayNameFor(model => model.Downloads)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Public)
+            </th>
+            <th></th>
+        }
+    </tr>
+
+    @foreach (var item in Model) {
+        @Html.Partial("_Entry", item)
+    }
+
+</table>

@@ -3,37 +3,77 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - YouTube Vanced</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    @* Original
+            <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("YouTube Vanced", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
+        </div>*@
+
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+            @Html.ActionLink("YouTube Vanced", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Downloads", "Index", "Download", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
+                    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+                        <li class="nav-item">@Html.ActionLink("Drive Files", "Index", "Drive", null, new { @class = "nav-link" })</li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                        <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
+                    }
+                    @* Dropdown example
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Slate <span class="caret"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="download">
+                                <a class="dropdown-item" href="https://jsfiddle.net/bootswatch/g1q7jxzf/">Open in JSFiddle</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../4/slate/bootstrap.min.css">bootstrap.min.css</a>
+                                <a class="dropdown-item" href="../4/slate/bootstrap.css">bootstrap.css</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../4/slate/_variables.scss">_variables.scss</a>
+                                <a class="dropdown-item" href="../4/slate/_bootswatch.scss">_bootswatch.scss</a>
+                            </div>
+                        </li>*@
                 </ul>
             </div>
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - YouTube Vanced</p>
         </footer>
     </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

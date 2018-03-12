@@ -1,0 +1,76 @@
+﻿@using System.Text.RegularExpressions
+@model MvcVanced.Models.APK
+
+@{
+    var item = Model;
+}
+
+@{
+    string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+    double len = (double)Model.Size;
+    int order = 0;
+    while (len >= 1024 && order < sizes.Length - 1) {
+        order++;
+        len = len / 1024;
+    }
+
+    // Adjust the format string to your preferences. For example "{0:0.#}{1}" would
+    // show a single decimal place, and no space.
+    var byteSize = ReverseString(Regex.Replace(ReverseString(Model.Size.ToString()), ".{3}", "$0,"));
+    ViewBag.FileSize = String.Format("{0:0.##} {1} ({2} bytes)", len, sizes[order], byteSize);
+
+    string ReverseString(string s) {
+        char[] arr = s.ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+}
+
+<tr class="link" onclick="location.href = '@(Url.Action("Download", "APKs", new { fileId = item.FileID }))'">
+    <td>
+        @Html.DisplayFor(modelItem => item.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Version)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Architecture)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MinimumAPI)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DPI)
+    </td>
+    <td>
+        @*@Html.DisplayFor(modelItem => item.Size)*@
+        @ViewBag.FileSize
+    </td>
+    @*<td>
+        @Html.DisplayFor(modelItem => item.Type)
+    </td>*@
+    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+        <td>
+            @Html.DisplayFor(modelItem => item.Downloads)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Public)
+        </td>
+        if (User.IsInRole("Admin")) {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        }
+        else {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID })
+            </td>
+        }
+    }
+</tr>

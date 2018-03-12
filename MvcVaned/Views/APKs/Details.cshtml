@@ -1,0 +1,122 @@
+﻿@using System.Text.RegularExpressions
+@model MvcVanced.Models.APK
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@{
+    string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+    double len = (double)Model.Size;
+    int order = 0;
+    while (len >= 1024 && order < sizes.Length - 1) {
+        order++;
+        len = len / 1024;
+    }
+
+    // Adjust the format string to your preferences. For example "{0:0.#}{1}" would
+    // show a single decimal place, and no space.
+    var byteSize = ReverseString(Regex.Replace(ReverseString(Model.Size.ToString()), ".{3}", "$0,"));
+    ViewBag.FileSize = String.Format("{0:0.##} {1} ({2} bytes)", len, sizes[order], byteSize);
+
+    string ReverseString(string s) {
+        char[] arr = s.ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>APK</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Version)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Version)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Architecture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Architecture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MinimumAPI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinimumAPI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DPI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DPI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.Size)*@
+            @ViewBag.FileSize
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Downloads)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Downloads)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileID)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.Url)*@
+            <a href="@Model.FileID">@Model.FileID</a>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Public)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Public)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

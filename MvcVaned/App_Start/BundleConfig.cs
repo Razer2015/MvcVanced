@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace MvcVaned
+namespace MvcVanced
 {
     public class BundleConfig
     {
@@ -22,8 +22,13 @@ namespace MvcVaned
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            //bundles.Add(new StyleBundle("~/Content/css").Include(
+            //          "~/Content/bootstrap.css",
+            //          "~/Content/site.css"));
+
+            // New theme
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/slate.bootstrap.css",
                       "~/Content/site.css"));
         }
     }

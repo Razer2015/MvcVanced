@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MvcVanced.Models.APK>
+
+@{
+    var apkType = ViewBag.Type;
+    List<MvcVanced.Models.APK> publics = null;
+    List<MvcVanced.Models.APK> betas = null;
+    var permission = Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"));
+    switch (apkType) {
+        case APKTYPE.NONROOT:
+            ViewBag.Title = "Non-Root";
+            publics = Model.Where(x => (x.Type == APKTYPE.NONROOT)).ToList();
+            betas = Model.Where(x => (x.Type == APKTYPE.NONROOT_BETA)).ToList();
+            break;
+        case APKTYPE.ROOT:
+            ViewBag.Title = "Rooted";
+            publics = Model.Where(x => (x.Type == APKTYPE.ROOT)).ToList();
+            betas = Model.Where(x => (x.Type == APKTYPE.ROOT_BETA)).ToList();
+            break;
+        case APKTYPE.MAGISK:
+            ViewBag.Title = "Magisk";
+            publics = Model.Where(x => (x.Type == APKTYPE.MAGISK)).ToList();
+            betas = Model.Where(x => (x.Type == APKTYPE.MAGISK_BETA)).ToList();
+            break;
+    }
+    if (!permission) {
+        publics = publics.Where(x => x.Public == true).ToList();
+    }
+    if (!permission || User.IsInRole("Tester")) {
+        betas = betas.Where(x => x.Public == true).ToList();
+    }
+}
+
+<div class="jumbotron">
+    <h1>Downloads</h1>
+    <p class="lead">The official downloads of YouTube Vanced</p>
+</div>
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+<h2>@ViewBag.Title downloads</h2>
+<div class="public">
+    @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" } })
+</div>
+
+@{
+    if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"))) {
+        if (betas != null) {
+            <h2>@ViewBag.Title beta downloads</h2>
+            <div class="beta">
+                @Html.Partial("_BetaEntries", betas, new ViewDataDictionary { { "id", "beta" } })
+            </div>
+        }
+    }
+}
+

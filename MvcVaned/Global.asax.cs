@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace MvcVaned
+namespace MvcVanced
 {
     public class MvcApplication : System.Web.HttpApplication
     {

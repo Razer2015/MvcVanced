@@ -1,0 +1,45 @@
+﻿@using System.Text.RegularExpressions
+@model GoogleDrive.Models.DriveFile
+
+@{
+    var item = Model;
+}
+
+@{
+    string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+    double len = (double)Model.Size;
+    int order = 0;
+    while (len >= 1024 && order < sizes.Length - 1) {
+        order++;
+        len = len / 1024;
+    }
+
+    // Adjust the format string to your preferences. For example "{0:0.#}{1}" would
+    // show a single decimal place, and no space.
+    var byteSize = ReverseString(Regex.Replace(ReverseString(Model.Size.ToString()), ".{3}", "$0,"));
+    ViewBag.FileSize = String.Format("{0:0.##} {1} ({2} bytes)", len, sizes[order], byteSize);
+
+    string ReverseString(string s) {
+        char[] arr = s.ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+}
+
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Version)
+    </td>
+    <td>
+        @ViewBag.FileSize
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FileID)
+    </td>
+    <td>
+        @Html.ActionLink("Track", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"] })
+    </td>
+</tr>
