@@ -12,6 +12,7 @@ namespace MvcVanced
         MAGISK = 2,
         NONROOT_BETA = 3,
         ROOT_BETA = 4,
-        MAGISK_BETA = 5
+        MAGISK_BETA = 5,
+        MICROG = 6
     }
 }

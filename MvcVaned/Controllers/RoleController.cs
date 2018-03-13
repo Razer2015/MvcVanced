@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 
 namespace MvcVanced.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager")]
     public class RoleController : Controller
     {
         ApplicationDbContext context;

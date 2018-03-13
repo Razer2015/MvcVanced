@@ -19,7 +19,11 @@ namespace MvcVanced.Controllers
         public ActionResult Index(APKTYPE type = APKTYPE.NONROOT)
         {
             ViewBag.Type = type;
-            
+            if (type == APKTYPE.NONROOT) {
+                var xd = db.APKs.ToList().Where(x => x.Type.Equals(APKTYPE.MICROG)).ToList();
+                ViewBag.MicroG = xd;
+            }
+
             return View(db.APKs.ToList());
         }
 
@@ -49,6 +53,7 @@ namespace MvcVanced.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult Create([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public")] APK aPK)
         {
             if (ModelState.IsValid)
@@ -62,6 +67,7 @@ namespace MvcVanced.Controllers
         }
 
         // GET: APKs/Edit/5
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,6 +87,7 @@ namespace MvcVanced.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult Edit([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public")] APK aPK)
         {
             if (ModelState.IsValid)
@@ -93,6 +100,7 @@ namespace MvcVanced.Controllers
         }
 
         // GET: APKs/Delete/5
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -110,6 +118,7 @@ namespace MvcVanced.Controllers
         // POST: APKs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult DeleteConfirmed(int id)
         {
             APK aPK = db.APKs.Find(id);

@@ -40,6 +40,11 @@
         @Html.DisplayFor(modelItem => item.FileID)
     </td>
     <td>
-        @Html.ActionLink("Track", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"] })
+        <p>@Html.ActionLink("Fast »", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"], fast = true }, new { @class = "btn btn-default" })</p>
+        @*@Html.ActionLink("Fast", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"], fast = true }) |
+        @Html.ActionLink("Edit", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"] })*@
+    </td>
+    <td>
+        <p>@Html.ActionLink("Edit »", "Create", new { title = item.Name, version = item.Version, size = item.Size, fileId = item.FileID, type = @ViewData["Type"] }, new { @class = "btn btn-default" })</p>
     </td>
 </tr>

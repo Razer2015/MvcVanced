@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Models\Change.cs" />
     <Compile Include="Models\DriveFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

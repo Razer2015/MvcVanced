@@ -10,19 +10,19 @@
     <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager") || Model.HasPassword) {
+            <dt>Password:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword) {
+                    @Html.ActionLink("Change your password", "ChangePassword")
+                }
+                else {
+                    @Html.ActionLink("Create", "SetPassword")
+                }
+                ]
+            </dd>
+        }
         <dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count [

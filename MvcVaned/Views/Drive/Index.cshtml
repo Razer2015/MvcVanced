@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Google Drive";
-    
+
 }
 
 <div class="jumbotron">
@@ -11,6 +11,9 @@
 </div>
 
 @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+
+    <p>@Html.ActionLink("Refresh", "Refresh", "Drive", null, new { @class = "btn btn-default" })</p>
+
     <h2>Non-Root</h2>
     <div class="nonroot">
         @Html.Partial("_Entries", Model.NonRoot, new ViewDataDictionary { { "id", "nonroot" } })

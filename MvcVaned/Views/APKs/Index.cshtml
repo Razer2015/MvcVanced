@@ -22,10 +22,8 @@
             betas = Model.Where(x => (x.Type == APKTYPE.MAGISK_BETA)).ToList();
             break;
     }
-    if (!permission) {
-        publics = publics.Where(x => x.Public == true).ToList();
-    }
     if (!permission || User.IsInRole("Tester")) {
+        publics = publics.Where(x => x.Public == true).ToList();
         betas = betas.Where(x => x.Public == true).ToList();
     }
 }
@@ -41,6 +39,19 @@
     </p>
 }
 
+@{
+    if (ViewBag.Title == "Rooted") {
+        <h2>Installer files</h2>
+        <p><a class="btn btn-default" href="https://drive.google.com/drive/folders/1x67EYgPeLLSVzRfZyeLRCeWmbF-fUggd?usp=sharing">Download »</a></p>
+    }
+    if (ViewBag.MicroG != null) {
+        <h2>MicroG download</h2>
+        <div class="microg">
+            @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" } })
+        </div>
+    }
+}
+
 <h2>@ViewBag.Title downloads</h2>
 <div class="public">
     @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" } })
@@ -51,7 +62,7 @@
         if (betas != null) {
             <h2>@ViewBag.Title beta downloads</h2>
             <div class="beta">
-                @Html.Partial("_BetaEntries", betas, new ViewDataDictionary { { "id", "beta" } })
+                @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" } })
             </div>
         }
     }

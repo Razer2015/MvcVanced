@@ -1,17 +1,60 @@
-﻿
+﻿@using MvcVanced.Models
+
+@model IList<User>
+
 @{
     ViewBag.Title = "Index";
 }
 
-@if (ViewBag.displayMenu == "Yes")
-{
+@if (ViewBag.displayMenu == "Yes") {
     <h1>Welcome Admin. Now you can create user Role.</h1>
     <h3>
         <li>@Html.ActionLink("Manage Role", "Index", "Role")</li>
     </h3>
+
+
+    <h2>Users</h2>
+    <table class="table">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Username
+            </th>
+            <th colspan="2" style="text-align:center;">
+                Actions
+            </th>
+        </tr>
+
+        @if (Model != null) {
+            foreach (var user in Model) {
+                //user.Id, user.Email, user.UserName, user.Roles
+                <tr>
+                    <td>
+                        @user.ID
+                    </td>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        @user.Username
+                    </td>
+                    <td>
+                        <p>@Html.ActionLink("Edit »", "Edit", new { id = user.ID }, new { @class = "btn btn-default" })</p>
+                    </td>
+                    <td>
+                        <p>@Html.ActionLink("Delete »", "Delete", new { id = user.ID }, new { @class = "btn btn-default" })</p>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
 }
-else
-{
+else {
     <h2>  Welcome <strong>@ViewBag.Name</strong> :)</h2>
 }
 

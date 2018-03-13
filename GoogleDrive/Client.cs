@@ -30,7 +30,8 @@ namespace GoogleDrive
             { "MAGISK", "1yvhwIlb3Kg-nC-A7GvrZJe48QaYH1-XO" },
             { "MAGISK_BETA", "1DSjxl-2J6xYLPzSezdz5u_gq89mc7isD" },
         };
-        Dictionary<string, List<DriveFile>> FetchedFiles;
+
+        public Dictionary<string, List<DriveFile>> FetchedFiles;
 
         string BasePath;
         DriveService Service;
@@ -79,6 +80,56 @@ namespace GoogleDrive
 
         private void SetStartPageToken(string token) {
             System.IO.File.WriteAllText(Path.Combine(BasePath, "start_page_token.json"), token);
+        }
+
+        public Dictionary<string, List<Models.Change>> GetChanges(Dictionary<string, List<DriveFile>> before, 
+                                                                        Dictionary<string, List<DriveFile>> after) {
+
+            var changes = new Dictionary<string, List<Models.Change>> {
+                { "NONROOT", new List<Models.Change>() },
+                { "NONROOT_BETA", new List<Models.Change>() },
+                { "ROOT", new List<Models.Change>() },
+                { "ROOT_BETA", new List<Models.Change>() },
+                { "MAGISK", new List<Models.Change>() },
+                { "MAGISK_BETA", new List<Models.Change>() },
+            };
+
+            foreach (var kvp in before) {
+                if (!after.ContainsKey(kvp.Key))
+                    continue;
+
+                var newKVP = after[kvp.Key];
+                foreach (var item in kvp.Value) {
+                    if (!newKVP.Any(x => x.FileID.Equals(item.FileID))) { // Deleted
+                        changes[kvp.Key].Add(new Models.Change {
+                            FileID = item.FileID,
+                            Type = CHANGE_TYPE.DELETE,
+                        });
+                    }
+                    else if (!newKVP.Any(x => x.FileID.Equals(item.FileID) && x.Version.Equals(item.Version))) { // Version changed
+                        var newFile = newKVP.First(x => x.FileID.Equals(item.FileID));
+                        changes[kvp.Key].Add(new Models.Change {
+                            FileID = item.FileID,
+                            Type = CHANGE_TYPE.CHANGE,
+                            Version = newFile.Version,
+                            Version_Before = item.Version
+                        });
+                    }
+                }
+
+                var Ids = new HashSet<string>(newKVP.Select(x => x.FileID));
+                var addedItems = kvp.Value.Where(p => !Ids.Contains(p.FileID)).ToArray();
+                if (addedItems != null && addedItems.Length > 0) { // Added
+                    foreach (var addedItem in addedItems) {
+                        changes[kvp.Key].Add(new Models.Change {
+                            FileID = addedItem.FileID,
+                            Type = CHANGE_TYPE.ADD
+                        });
+                    }
+                }
+            }
+
+            return (changes);
         }
 
         public List<string> GetChanges() {
@@ -132,11 +183,7 @@ namespace GoogleDrive
         #endregion
 
         #region Get Files
-        public Dictionary<string, List<DriveFile>> FetchAllFiles(bool forceFetch = false) {
-            if (FetchedFiles != null && !forceFetch) {
-                return (FetchedFiles);
-            }
-
+        public Dictionary<string, List<DriveFile>> FetchAllFiles() {
             if (Service == null) {
                 throw new Exception("Error: DriveService is null. Have you forgot to connect?");
             }
@@ -179,7 +226,6 @@ namespace GoogleDrive
             // Refresh the changes token
             GetStartPageToken(fresh: true);
 
-            FetchedFiles = output;
             return (output);
         }
 
