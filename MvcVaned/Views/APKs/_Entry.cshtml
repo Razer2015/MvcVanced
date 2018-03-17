@@ -3,6 +3,7 @@
 
 @{
     var item = Model;
+    bool isAdminOrManager = (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")));
 }
 
 @{
@@ -26,7 +27,9 @@
     }
 }
 
-<tr class="link" onclick="location.href = '@(Url.Action("Download", "APKs", new { fileId = item.FileID }))'">
+@*<tr class="link" onclick="location.href = '@(Url.Action("Download", "APKs", new { fileId = item.FileID }))'">*@
+
+<tr class="@(isAdminOrManager ? "auth" : "link")" onclick="@(isAdminOrManager ? null : $"location.href = '{(Url.Action("Download", "APKs", new { fileId = item.FileID }))}'")">
     <td>
         @Html.DisplayFor(modelItem => item.Title)
     </td>
@@ -47,17 +50,34 @@
         @ViewBag.FileSize
     </td>
     @*<td>
-        @Html.DisplayFor(modelItem => item.Type)
-    </td>*@
-    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>*@
+    @if (isAdminOrManager) {
         <td>
             @Html.DisplayFor(modelItem => item.Downloads)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FileID)
+            <a href="@(Url.Action("Download", "APKs", new { fileId = item.FileID }))">@Html.DisplayFor(modelItem => item.FileID)</a>
+            @*@Html.DisplayFor(modelItem => item.FileID)*@
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Public)
+            @*@Html.DisplayFor(modelItem => item.Public)*@
+            @{
+                if (Model.Public) {
+                    <div class="btn-group btn-group-toggle" id="button-id" data-url="@Url.Action("Publicity", "APKs", new { fileId = Model.FileID } )" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="checkbox" checked="" autocomplete="off"> Public
+                        </label>
+                    </div>
+                }
+                else {
+                    <div class="btn-group btn-group-toggle" id="button-id" data-url="@Url.Action("Publicity", "APKs", new { fileId = Model.FileID } )" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type="checkbox" checked="" autocomplete="off"> Offline
+                        </label>
+                    </div>
+                }
+            }
         </td>
         if (User.IsInRole("Admin")) {
             <td>

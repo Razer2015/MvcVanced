@@ -103,7 +103,7 @@
 
         <dd>
             @*@Html.DisplayFor(model => model.Url)*@
-            <a href="@Model.FileID">@Model.FileID</a>
+            <a href="@(Url.Action("Download", "APKs", new { fileId = Model.FileID }))">@Model.FileID</a>
         </dd>
 
         <dt>

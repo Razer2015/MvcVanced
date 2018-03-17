@@ -1,44 +1,47 @@
 ﻿@model IEnumerable<MvcVanced.Models.APK>
 
 <table class="table table-hover" id="@ViewData["id"]">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Version)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Architecture)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MinimumAPI)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DPI)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Size)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>*@
-        @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+    <thead>
+        <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Downloads)
+                @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FileID)
+                @Html.DisplayNameFor(model => model.Version)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Public)
+                @Html.DisplayNameFor(model => model.Architecture)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinimumAPI)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DPI)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>*@
+            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+                <th>
+                    @Html.DisplayNameFor(model => model.Downloads)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Public)
+                </th>
+                <th></th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model) {
+            @Html.Partial("_Entry", item)
         }
-    </tr>
-
-    @foreach (var item in Model) {
-        @Html.Partial("_Entry", item)
-    }
-
+    </tbody>
 </table>

@@ -24,7 +24,7 @@ namespace MvcVanced.Controllers
                 ViewBag.MicroG = xd;
             }
 
-            return View(db.APKs.ToList());
+            return View(db.APKs.ToList().OrderByDescending(x => x.Version));
         }
 
         // GET: APKs/Details/5
@@ -139,6 +139,21 @@ namespace MvcVanced.Controllers
 
             // Download
             return Redirect($"https://drive.google.com/uc?export=download&id={fileId}");
+        }
+
+        // GET: APKs/Publicity/0BxmmnFTeQFuaeC1NSjlQd2s4VFk
+        [Authorize(Roles = "Admin,Manager")]
+        public void Publicity(string fileId) {
+            if (fileId == null) {
+                return;// new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (!db.APKs.Any(x => x.FileID.Equals(fileId))) {
+                return;// HttpNotFound();
+            }
+
+            // Reverse the publicity
+            db.APKs.FirstOrDefault(x => x.FileID.Equals(fileId)).Public = !db.APKs.FirstOrDefault(x => x.FileID.Equals(fileId)).Public;
+            db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)

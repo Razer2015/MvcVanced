@@ -68,3 +68,22 @@
     }
 }
 
+@section scripts {
+    <script>
+        //$("#button-id").click(function () {
+        $("table").on('click', '#button-id', function (evt) {
+            var url = $(this).data("url");
+            var $this = $(this).find("label");
+            if (!$this.hasClass('active')) {
+                $this.text("Public");
+            }
+            else {
+                $this.text("Offline");
+            }
+            $.get(url, function (result) {
+                //do something with the result if you ever need to
+
+            });
+        });
+    </script>
+}

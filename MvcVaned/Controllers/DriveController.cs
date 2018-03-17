@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -184,6 +185,11 @@ namespace MvcVanced.Controllers
             var name = "All";
             if (Architectures.Any(x => title.Contains(x))) {
                 var matches = Architectures.Where(x => title.Contains(x)).ToList();
+
+                if (matches.Contains("x86_64") && Regex.Matches(title, "x86").Count <= 1) {
+                    matches.Remove("x86");
+                }
+
                 name = string.Join("/", matches);
             }
             return (name);
