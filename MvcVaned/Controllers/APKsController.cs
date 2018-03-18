@@ -24,7 +24,7 @@ namespace MvcVanced.Controllers
                 ViewBag.MicroG = xd;
             }
 
-            return View(db.APKs.ToList().OrderByDescending(x => x.Version));
+            return View(db.APKs.ToList().OrderByDescending(x => x.Version ).ThenBy(x => x.Architecture));
         }
 
         // GET: APKs/Details/5
