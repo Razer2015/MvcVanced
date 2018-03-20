@@ -6,7 +6,7 @@ namespace MvcVanced.Models
     public class APK
     {
         public int ID { get; set; }
-        [Display(Name = "Theme/Title")]
+        [Display(Name = "Theme/Theme Toggled")]
         public string Title { get; set; }
         public string Version { get; set; }
         public string Architecture { get; set; }

@@ -5,6 +5,17 @@
 }
 
 <h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="bs-component">
+            <div class="alert alert-light">
+                <h4 class="alert-heading">Hello there!</h4>
+                <p class="mb-0">There is no point logging in, unless you are a staff member.</p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
@@ -51,10 +62,10 @@
         </section>
     </div>
     <div class="col-md-4">
-            <section id="socialLoginForm">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-            </section>
-        </div>
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
 </div>
 
 @section Scripts {

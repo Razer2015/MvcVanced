@@ -224,6 +224,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\cyborg.bootstrap.css" />
     <Content Include="Content\cyborg.bootstrap.min.css" />
+    <Content Include="Content\datatables\dataTables.bootstrap.min.js" />
+    <Content Include="Content\datatables\jquery.dataTables.min.js" />
     <Content Include="Content\Favicon\android-icon-144x144.png" />
     <Content Include="Content\Favicon\android-icon-192x192.png" />
     <Content Include="Content\Favicon\android-icon-36x36.png" />

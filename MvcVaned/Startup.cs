@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using MvcVanced.Models;
 using Owin;
+using System.Threading;
 using System.Web;
 
 [assembly: OwinStartup(typeof(MvcVanced.Startup))]
@@ -11,12 +12,18 @@ namespace MvcVanced
 {
     public partial class Startup
     {
+        public Startup() {
+            Global.GoogleClient = new GoogleDrive.Client(HttpContext.Current.Server.MapPath("~/App_Data/"));
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Global.GoogleClient.FetchedFiles = Global.GoogleClient.FetchAllFiles();
+            }).Start();
+        }
+
         public void Configuration(IAppBuilder app) {
             ConfigureAuth(app);
             createRolesandUsers();
-
-            Global.GoogleClient = new GoogleDrive.Client(HttpContext.Current.Server.MapPath("~/App_Data/"));
-            Global.GoogleClient.FetchedFiles = Global.GoogleClient.FetchAllFiles();
         }
 
         // In this method we will create default User roles and Admin user for login   

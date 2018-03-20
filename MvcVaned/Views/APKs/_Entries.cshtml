@@ -1,10 +1,15 @@
 ﻿@model IEnumerable<MvcVanced.Models.APK>
 
-<table class="table table-hover" id="@ViewData["id"]">
+<table class="table table-hover table-bordered table-striped" id="@ViewData["id"]">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @if ((string)(ViewData["id"]) == "microg") {
+                    @:Title
+                }
+                else {
+                    @Html.DisplayNameFor(model => model.Title)
+                }
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Version)

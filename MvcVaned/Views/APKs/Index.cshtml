@@ -45,6 +45,14 @@
         <p><a class="btn btn-default" href="https://drive.google.com/drive/folders/1x67EYgPeLLSVzRfZyeLRCeWmbF-fUggd?usp=sharing">Download »</a></p>
     }
     if (ViewBag.MicroG != null) {
+        <div class="col-lg-12">
+            <div class="bs-component">
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Install MicroG!</h4>
+                    <p class="mb-0">You need to install MicroG to login. Without it, <strong>add account</strong> button won't do anything.</p>
+                </div>
+            </div>
+        </div>
         <h2>MicroG download</h2>
         <div class="microg">
             @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" } })
@@ -83,6 +91,17 @@
             $.get(url, function (result) {
                 //do something with the result if you ever need to
 
+            });
+        });
+        $(function () {
+            $("#public").dataTable({
+                "iDisplayLength": 5,
+                "aLengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                "columnDefs": [
+                    { "orderData": 2, "targets": 0 },
+                    { "orderData": 3, "targets": 1 }
+                ]
+                //"order": [[2, "asc"]]
             });
         });
     </script>
