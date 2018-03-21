@@ -5,7 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow">
     <title>@ViewBag.Title - YouTube Vanced</title>
-    @Styles.Render("~/Content/css")
+    <meta name="description" content="Vanced is a well known modded version of YouTube with many features, adblocking, background playback and PiP to name a few." />
+    <meta name="keywords" content="YouTube,Vanced,Background Playback, PiP" />
+    <meta name="author" content="Vanced Team">
+    <meta property="og:image" content="@Url.Content("~/Content/Favicon/android-icon-192x192.png")">
+    @{
+        var activeTheme = 0;
+        if (Request.Cookies["theme"] != null) {
+            if (int.TryParse(Request.Cookies["theme"].Value, out var result)) {
+                activeTheme = result;
+            }
+        }
+        if (activeTheme == 1) {
+            @Styles.Render("~/Content/css/cyborg")
+        }
+        else if (activeTheme == 2) {
+            @Styles.Render("~/Content/css/darkly")
+        }
+        else if (activeTheme == 3) {
+            @Styles.Render("~/Content/css/flatly")
+        }
+        else {
+            @Styles.Render("~/Content/css/slate")
+        }
+    }
     @Scripts.Render("~/bundles/modernizr")
     <link rel="apple-touch-icon" sizes="57x57" href="@Url.Content("~/Content/Favicon/apple-icon-57x57.png")">
     <link rel="apple-touch-icon" sizes="60x60" href="@Url.Content("~/Content/Favicon/apple-icon-60x60.png")">
@@ -81,6 +104,18 @@
                         <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", null, new { @class = "nav-link" })</li>
                     }
+                    @{
+
+                    }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Theme</a>
+                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            <a>@Html.ActionLink("Slate (Default)", "ChangeTheme", "Theme", new { id = 0, url = @Request.Url }, new { @class = $"{((activeTheme == 0) ? "dropdown-item active" : "dropdown-item")}" })</a>
+                            <a>@Html.ActionLink("Cyborg", "ChangeTheme", "Theme", new { id = 1, url = @Request.Url }, new { @class = $"{((activeTheme == 1) ? "dropdown-item active" : "dropdown-item")}" })</a>
+                            <a>@Html.ActionLink("Darkly", "ChangeTheme", "Theme", new { id = 2, url = @Request.Url }, new { @class = $"{((activeTheme == 2) ? "dropdown-item active" : "dropdown-item")}" })</a>
+                            <a>@Html.ActionLink("Flatly", "ChangeTheme", "Theme", new { id = 3, url = @Request.Url }, new { @class = $"{((activeTheme == 3) ? "dropdown-item active" : "dropdown-item")}" })</a>
+                        </div>
+                    </li>
                     @* Dropdown example
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Slate <span class="caret"></span></a>
@@ -112,8 +147,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/Content/datatables/jquery.dataTables.min.js")
-    @Scripts.Render("~/Content/datatables/dataTables.bootstrap.min.js")
+    @Scripts.Render("~/Content/datatable")
+    @Scripts.Render("~/Content/datatable_bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

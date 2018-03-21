@@ -193,6 +193,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -258,6 +259,10 @@
     <Content Include="Content\original.bootstrap.min.css" />
     <Content Include="Content\slate.bootstrap.css" />
     <Content Include="Content\slate.bootstrap.min.css" />
+    <Content Include="Content\Themes\cyborg\bootstrap.min.css" />
+    <Content Include="Content\Themes\darkly\bootstrap.min.css" />
+    <Content Include="Content\Themes\flatly\bootstrap.min.css" />
+    <Content Include="Content\Themes\slate\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -378,6 +383,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Crash\" />
+    <Folder Include="Views\Theme\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803090933278_init.resx">
