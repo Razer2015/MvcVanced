@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<MvcVanced.Models.APK>
 
 @{
-    var apkType = ViewBag.Type;
+    var apkType = (APKTYPE)ViewBag.Type;
+    var dlStyle = (DLTYPE)(ViewBag.Style);
     List<MvcVanced.Models.APK> publics = null;
     List<MvcVanced.Models.APK> betas = null;
     var permission = Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"));
@@ -55,22 +56,31 @@
         </div>
         <h2>MicroG download</h2>
         <div class="microg">
-            @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" } })
+            @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" }, { "style", dlStyle } })
         </div>
     }
 }
 
 <h2>@ViewBag.Title downloads</h2>
 <div class="public">
-    @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" } })
+    @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" }, { "style", dlStyle } })
 </div>
+
+@if (dlStyle != DLTYPE.BASIC) {
+    <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+        <div class="card-body">
+            <h4 class="card-title">Trouble downloading?</h4>
+            <p class="card-text">@Html.ActionLink("Try the basic version here.", "Index", "APKs", new { type = apkType, style = DLTYPE.BASIC }, null)</p>
+        </div>
+    </div>
+}
 
 @{
     if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"))) {
         if (betas != null) {
             <h2>@ViewBag.Title beta downloads</h2>
             <div class="beta">
-                @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" } })
+                @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" }, { "style", dlStyle } })
             </div>
         }
     }

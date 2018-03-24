@@ -14,47 +14,70 @@
 
 
     <h2>Users</h2>
-    <table class="table">
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Username
-            </th>
-            <th colspan="2" style="text-align:center;">
-                Actions
-            </th>
-        </tr>
-
-        @if (Model != null) {
-            foreach (var user in Model) {
-                //user.Id, user.Email, user.UserName, user.Roles
+    <div class="userlist">
+        <table class="table table-hover table-bordered table-striped" id="userlist">
+            <thead>
                 <tr>
-                    <td>
-                        @user.ID
-                    </td>
-                    <td>
-                        @user.Email
-                    </td>
-                    <td>
-                        @user.Username
-                    </td>
-                    <td>
-                        <p>@Html.ActionLink("Edit »", "Edit", new { id = user.ID }, new { @class = "btn btn-default" })</p>
-                    </td>
-                    <td>
-                        <p>@Html.ActionLink("Delete »", "Delete", new { id = user.ID }, new { @class = "btn btn-default" })</p>
-                    </td>
+                    <th colspan="3" style="text-align:center;">
+                        Basic information
+                    </th>
+                    <th colspan="2" style="text-align:center;">
+                        Actions
+                    </th>
                 </tr>
-            }
-        }
-    </table>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Username
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null) {
+                    foreach (var user in Model) {
+                        //user.Id, user.Email, user.UserName, user.Roles
+                        <tr>
+                            <td>
+                                @user.ID
+                            </td>
+                            <td>
+                                @user.Email
+                            </td>
+                            <td>
+                                @user.Username
+                            </td>
+                            <td>
+                                <p>@Html.ActionLink("Edit »", "Edit", new { id = user.ID }, new { @class = "btn btn-default" })</p>
+                            </td>
+                            <td>
+                                <p>@Html.ActionLink("Delete »", "Delete", new { id = user.ID }, new { @class = "btn btn-default" })</p>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else {
     <h2>  Welcome <strong>@ViewBag.Name</strong> :)</h2>
 }
 
+@section scripts {
+    <script>
+            $(function () {
+                $("#userlist").dataTable({
+                    "iDisplayLength": 10,
+                    "aLengthMenu": [[10, 20, 30, 40, -1], [10, 20, 30, 40, "All"]]
+                    //"order": [[2, "asc"]]
+                });
+            });
+    </script>
+}

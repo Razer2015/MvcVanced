@@ -29,6 +29,7 @@
             @Styles.Render("~/Content/css/slate")
         }
     }
+    @*@Styles.Render("~/Content/css")*@
     @Scripts.Render("~/bundles/modernizr")
     <link rel="apple-touch-icon" sizes="57x57" href="@Url.Content("~/Content/Favicon/apple-icon-57x57.png")">
     <link rel="apple-touch-icon" sizes="60x60" href="@Url.Content("~/Content/Favicon/apple-icon-60x60.png")">
@@ -103,9 +104,6 @@
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                         <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", null, new { @class = "nav-link" })</li>
-                    }
-                    @{
-
                     }
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Theme</a>

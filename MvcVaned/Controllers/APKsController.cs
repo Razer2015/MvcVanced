@@ -16,9 +16,10 @@ namespace MvcVanced.Controllers
         private APKDBContext db = new APKDBContext();
 
         // GET: APKs
-        public ActionResult Index(APKTYPE type = APKTYPE.NONROOT)
+        public ActionResult Index(APKTYPE type = APKTYPE.NONROOT, DLTYPE style = DLTYPE.FANCY)
         {
             ViewBag.Type = type;
+            ViewBag.Style = style;
             if (type == APKTYPE.NONROOT) {
                 var xd = db.APKs.ToList().Where(x => x.Type.Equals(APKTYPE.MICROG)).ToList();
                 ViewBag.MicroG = xd;

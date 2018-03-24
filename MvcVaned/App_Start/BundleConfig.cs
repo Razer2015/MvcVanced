@@ -48,17 +48,29 @@ namespace MvcVanced
             bundles.Add(new StyleBundle("~/Content/datatable_bootstrap", "https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js").Include(
                       "~/Content/datatables/jquery.dataTables.min.js"));
 
+            //// New theme
+            //bundles.Add(new StyleBundle("~/Content/css/slate").Include(
+            //          "~/Content/Themes/slate/bootstrap.min.css"));
+
+            //bundles.Add(new StyleBundle("~/Content/css/cyborg").Include(
+            //          "~/Content/Themes/cyborg/bootstrap.min.css"));
+
+            //bundles.Add(new StyleBundle("~/Content/css/darkly").Include(
+            //          "~/Content/Themes/darkly/bootstrap.min.css"));
+
+            //bundles.Add(new StyleBundle("~/Content/css/flatly").Include(
+            //          "~/Content/Themes/flatly/bootstrap.min.css"));
             // New theme
-            bundles.Add(new StyleBundle("~/Content/css/slate", "https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/slate/bootstrap.min.css").Include(
+            bundles.Add(new StyleBundle("~/Content/css/slate", "https://cdn.rawgit.com/Razer2015/01ee5b4b78cea0ddc54716ffdd07a991/raw/d86595492a3fd6da9332b138d4af8fee7ac93e2a/slate.bootstrap.min.css").Include(
                       "~/Content/Themes/slate/bootstrap.min.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/cyborg", "https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/cyborg/bootstrap.min.css").Include(
+            bundles.Add(new StyleBundle("~/Content/css/cyborg", "https://cdn.rawgit.com/Razer2015/4e31c17044691e8e6c294a2e691648be/raw/6e060217e18d498ddf0f08646142266dbe327aef/cyborg.bootstrap.min.css").Include(
                       "~/Content/Themes/cyborg/bootstrap.min.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/darkly", "https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/darkly/bootstrap.min.css").Include(
+            bundles.Add(new StyleBundle("~/Content/css/darkly", "https://cdn.rawgit.com/Razer2015/ed543a5558df50381ea20b1906f7b17c/raw/d534a7c4deb35c1ebcf8a04bb47d71f2ce63fc22/darkly.bootstrap.min.css").Include(
                       "~/Content/Themes/darkly/bootstrap.min.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/flatly", "https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css").Include(
+            bundles.Add(new StyleBundle("~/Content/css/flatly", "https://cdn.rawgit.com/Razer2015/7341dcce6ae01678aa28c9096634332b/raw/fea6fa4dc541deb6aa8eb9b8220f4e2d00847fa2/flatly.bootstrap.min.css").Include(
                       "~/Content/Themes/flatly/bootstrap.min.css"));
 
             //bundles.Add(new StyleBundle("~/Content/css", "https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/slate/bootstrap.min.css").Include(

@@ -26,6 +26,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Size)
             </th>
+            @if ((DLTYPE)(ViewData["style"]) == DLTYPE.BASIC && !(Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))) {
+                <th>
+                </th>
+            }
             @*<th>
                     @Html.DisplayNameFor(model => model.Type)
                 </th>*@
@@ -45,8 +49,15 @@
     </thead>
 
     <tbody>
-        @foreach (var item in Model) {
-            @Html.Partial("_Entry", item)
+        @if ((DLTYPE)(ViewData["style"]) == DLTYPE.BASIC && !(Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))) {
+            foreach (var item in Model) {
+                @Html.Partial("_Entry_Basic", item)
+            }
+        }
+        else {
+            foreach (var item in Model) {
+                @Html.Partial("_Entry", item)
+            }
         }
     </tbody>
 </table>
