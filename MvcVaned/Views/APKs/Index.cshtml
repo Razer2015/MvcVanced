@@ -43,7 +43,7 @@
 @{
     if (ViewBag.Title == "Rooted") {
         <h2>Installer files</h2>
-        <p><a class="btn btn-default" href="https://drive.google.com/drive/folders/1x67EYgPeLLSVzRfZyeLRCeWmbF-fUggd?usp=sharing">Download »</a></p>
+        <p><a class="btn btn-warning" href="https://drive.google.com/drive/folders/1x67EYgPeLLSVzRfZyeLRCeWmbF-fUggd?usp=sharing">Download »</a></p>
     }
     if (ViewBag.MicroG != null) {
         <div class="col-lg-12">
@@ -107,11 +107,11 @@
             $("#public").dataTable({
                 "iDisplayLength": 5,
                 "aLengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
-                "columnDefs": [
-                    { "orderData": 2, "targets": 0 },
-                    { "orderData": 3, "targets": 1 }
-                ]
-                //"order": [[2, "asc"]]
+                //"columnDefs": [
+                //    { "orderData": [1], "targets": 1 }
+                //    //{ "orderData": 3, "targets": 1 }
+                //]
+                "order": [[1, "desc"]]
             });
         });
     </script>
