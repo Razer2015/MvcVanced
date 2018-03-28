@@ -29,7 +29,8 @@
 
 @*<tr class="link" onclick="location.href = '@(Url.Action("Download", "APKs", new { fileId = item.FileID }))'">*@
 
-<tr class="@(isAdminOrManager ? "auth" : "link")" onclick="@(isAdminOrManager ? null : $"location.href = '{(Url.Action("Download", "APKs", new { fileId = item.FileID }))}'")">
+@*<tr class="@(isAdminOrManager ? "auth" : "link")" onclick="@(isAdminOrManager ? null : $"location.href = '{(Url.Action("Download", "APKs", new { fileId = item.FileID }))}'")">*@
+<tr data-url="@Url.Action("Download", "APKs", new { fileId = item.FileID } )">
     <td>
         @Html.DisplayFor(modelItem => item.Title)
     </td>
@@ -48,6 +49,23 @@
     <td>
         @*@Html.DisplayFor(modelItem => item.Size)*@
         @ViewBag.FileSize
+    </td>
+    <td>
+        @{
+            try {
+                var hashes = (List<GoogleDrive.Models.DriveFile>)ViewData["hashes"];
+                if (hashes.Any(x => x.FileID.Equals(item.FileID))) {
+                    var checksum = hashes.FirstOrDefault(x => x.FileID.Equals(item.FileID)).MD5Checksum;
+                    @checksum
+                }
+                else {
+                    @:Unknown
+                }
+            }
+            catch {
+                @:Unknown
+            }
+        }
     </td>
     @*<td>
             @Html.DisplayFor(modelItem => item.Type)

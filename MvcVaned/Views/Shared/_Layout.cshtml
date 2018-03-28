@@ -10,6 +10,7 @@
     <meta name="author" content="Vanced Team">
     <meta property="og:image" content="@Url.Content("~/Content/Favicon/android-icon-192x192.png")">
     @{
+        var downloadType = Request.Params["type"];
         var activeTheme = 0;
         if (Request.Cookies["theme"] != null) {
             if (int.TryParse(Request.Cookies["theme"].Value, out var result)) {
@@ -59,6 +60,32 @@
         window.appInsights = appInsights;
         appInsights.trackPageView();
     </script>
+    <script>
+        // https://stackoverflow.com/a/5968306
+        function getCookie(name) {
+            var dc = document.cookie;
+            var prefix = name + "=";
+            var begin = dc.indexOf("; " + prefix);
+            if (begin == -1) {
+                begin = dc.indexOf(prefix);
+                if (begin != 0) return null;
+            }
+            else {
+                begin += 2;
+                var end = document.cookie.indexOf(";", begin);
+                if (end == -1) {
+                    end = dc.length;
+                }
+            }
+            return decodeURI(dc.substring(begin + prefix.length, end));
+        }
+
+        var jsCookie = getCookie("js");
+        if (jsCookie == null) {
+            document.cookie = "js=1; path=/";
+            location.reload(true);
+        }
+    </script>
 </head>
 <body>
     @* Original
@@ -95,7 +122,15 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav">
                     <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Downloads", "Index", "Download", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Downloads</a>
+                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            <a>@Html.ActionLink("Non-Root", "Index", "APKs", new { type = APKTYPE.NONROOT }, new { @class = $"{((downloadType == "NONROOT") ? "dropdown-item active" : "dropdown-item")}" })</a>
+                            <a>@Html.ActionLink("Root", "Index", "APKs", new { type = APKTYPE.ROOT }, new { @class = $"{((downloadType == "ROOT") ? "dropdown-item active" : "dropdown-item")}" })</a>
+                            <a>@Html.ActionLink("Magisk", "Index", "APKs", new { type = APKTYPE.MAGISK }, new { @class = $"{((downloadType == "MAGISK") ? "dropdown-item active" : "dropdown-item")}" })</a>
+                        </div>
+                    </li>
+                    @*<li class="nav-item">@Html.ActionLink("Downloads", "Index", "Download", null, new { @class = "nav-link" })</li>*@
                     @*<li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>*@
                     <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
                     @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {

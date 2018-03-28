@@ -15,14 +15,23 @@ namespace MvcVanced.Controllers
         ApplicationDbContext context = new ApplicationDbContext();
         private APKDBContext db = new APKDBContext();
 
+        bool GetIsJavascriptOn() {
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("js");
+            bool js = (cookie != null) && (cookie.Value == "1");
+            return (js);
+        }
+
         // GET: APKs
         public ActionResult Index(APKTYPE type = APKTYPE.NONROOT, DLTYPE style = DLTYPE.FANCY)
         {
             ViewBag.Type = type;
-            ViewBag.Style = style;
+            ViewBag.Style = ((GetIsJavascriptOn() ? style : DLTYPE.BASIC));
             if (type == APKTYPE.NONROOT) {
                 var xd = db.APKs.ToList().Where(x => x.Type.Equals(APKTYPE.MICROG)).ToList();
                 ViewBag.MicroG = xd;
+            }
+            if (Global.GoogleClient?.FetchedFiles != null && Global.GoogleClient.FetchedFiles.ContainsKey(type.ToString())) {
+                ViewBag.Hashes = Global.GoogleClient.FetchedFiles[type.ToString()];
             }
 
             return View(db.APKs.ToList().OrderByDescending(x => x.Version ).ThenBy(x => x.Architecture));

@@ -6,7 +6,7 @@
             <th>
                 @if ((string)(ViewData["id"]) == "microg") {
                     @:Title
-                }
+    }
                 else {
                     @Html.DisplayNameFor(model => model.Title)
                 }
@@ -30,6 +30,9 @@
                 <th>
                 </th>
             }
+            <th>
+                MD5 Checksum
+            </th>
             @*<th>
                     @Html.DisplayNameFor(model => model.Type)
                 </th>*@
@@ -56,7 +59,7 @@
         }
         else {
             foreach (var item in Model) {
-                @Html.Partial("_Entry", item)
+                @Html.Partial("_Entry", item, new ViewDataDictionary { { "hashes", ViewData["hashes"] } })
             }
         }
     </tbody>

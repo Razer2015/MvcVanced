@@ -202,7 +202,7 @@ namespace GoogleDrive
                     foreach (var folder in folders) {
                         // Define parameters of request.
                         var fileRequest = Service.Files.List();
-                        fileRequest.Fields = "nextPageToken, files(id, name, size, shared, parents, mimeType)";
+                        fileRequest.Fields = "nextPageToken, files(id, name, size, shared, parents, mimeType, md5Checksum)";
                         fileRequest.Q = $"mimeType!='application/vnd.google-apps.folder' and trashed=false and '{folder.Id}' in parents";
 
                         // List files
@@ -213,7 +213,8 @@ namespace GoogleDrive
                                     FileID = file.Id,
                                     Name = file.Name,
                                     Size = file.Size,
-                                    Version = folder.Name
+                                    Version = folder.Name,
+                                    MD5Checksum = file.Md5Checksum
                                 });
                             }
                         }

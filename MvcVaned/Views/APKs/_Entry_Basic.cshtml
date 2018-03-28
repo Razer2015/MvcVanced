@@ -52,6 +52,20 @@
     <td>
         <a class="btn btn-primary" href="@Url.Action("Download", "APKs", new { fileId = item.FileID } )" role="button">Download</a>
     </td>
+    <td>
+        @{
+            try {
+                var hashes = (List<GoogleDrive.Models.DriveFile>)ViewData["hashes"];
+                if (hashes.Any(x => x.FileID.Equals(item.FileID))) {
+                    var checksum = hashes.FirstOrDefault(x => x.FileID.Equals(item.FileID)).MD5Checksum;
+                    @checksum
+                }
+            }
+            catch {
+                @:Unknown
+            }
+        }
+    </td>
     @*<td>
             @Html.DisplayFor(modelItem => item.Type)
         </td>*@

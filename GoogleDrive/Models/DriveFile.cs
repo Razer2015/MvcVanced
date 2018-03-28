@@ -12,5 +12,6 @@ namespace GoogleDrive.Models
         public string Name { get; set; }
         public long? Size { get; set; }
         public string Version { get; set; }
+        public string MD5Checksum { get; set; }
     }
 }

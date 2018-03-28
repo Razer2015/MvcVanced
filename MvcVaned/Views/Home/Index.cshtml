@@ -5,9 +5,37 @@
 <div class="jumbotron">
     <h1>YouTube Vanced</h1>
     <p class="lead">Vanced is a well known modded version of YouTube with many features such as adblocking and background playback and many more.</p>
-    <p><a href="@Url.Action("Index", "Download")" class="btn btn-primary btn-lg">Download now &raquo;</a></p>
+    <p>
+        Features in all versions are the same. There is a slight difference in the Non-Root however. Since the package name
+        had to be changed, the Google Play Services won't play along. This means that you have to install additional MicroG package, in order to be able to log-in.
+    </p>
+    @*<p><a href="@Url.Action("Index", "Download")" class="btn btn-primary btn-lg">Download now &raquo;</a></p>*@
 </div>
 
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Non-Root Downloads</h2>
+        <p>
+            Downloads designed to work with any device that doesn't have root or magisk. If you don't know what they are, download this one. <strong>
+                Remember
+                to download the MicroG package if you want to be able to log-in.
+            </strong>
+        </p>
+        <p>@Html.ActionLink("Downloads »", "Index", "APKs", new { type = APKTYPE.NONROOT }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Root Downloads</h2>
+        <p>Downloads designed to work with rooted devices.</p>
+        <p>@Html.ActionLink("Downloads »", "Index", "APKs", new { type = APKTYPE.ROOT }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Magisk Downloads</h2>
+        <p>Downloads designed work with Magisk.</p>
+        <p>@Html.ActionLink("Downloads »", "Index", "APKs", new { type = APKTYPE.MAGISK }, new { @class = "btn btn-default" })</p>
+    </div>
+</div>
+<hr class="my-4">
 <div class="row">
     <div class="col-md-4">
         <h2>Alpha stage</h2>
@@ -15,23 +43,4 @@
             The site is currently in early Alpha testing.
         </p>
     </div>
-    @*<div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>*@
 </div>

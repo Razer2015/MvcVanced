@@ -31,7 +31,89 @@
 
 <div class="jumbotron">
     <h1>Downloads</h1>
-    <p class="lead">The official downloads of YouTube Vanced</p>
+    @switch (apkType) {
+        case APKTYPE.NONROOT:
+            <p class="lead">The official Non-Root version downloads of YouTube Vanced</p>
+            <hr class="my-4">
+            <p>Installation</p>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Just install the APK like you would normally install
+                    <span class="badge badge-primary badge-pill">1</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Remember to install MicroG as well if you want to be able to login
+                    <span class="badge badge-primary badge-pill">2</span>
+                </li>
+            </ul>
+            break;
+        case APKTYPE.ROOT:
+            <p class="lead">The official Root version downloads of YouTube Vanced</p>
+            <hr class="my-4">
+            <p>Installation</p>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Download the installer found in the Installer files part below
+                    <span class="badge badge-primary badge-pill">1</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Download the correct APK for your device (below)
+                    <span class="badge badge-primary badge-pill">2</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Place the downloaded apk into /sdcard/Downloads or inside the installation zip
+                    <span class="badge badge-primary badge-pill">3</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Completely uninstall all YouTube updates and disable auto-update in the playstore
+                    <span class="badge badge-primary badge-pill">4</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Flash the installer in TWRP
+                    <span class="badge badge-primary badge-pill">5</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Profit!
+                    <span class="badge badge-primary badge-pill">6</span>
+                </li>
+            </ul>
+            <p><font size="3" color="red">Uninstall all YouTube updates and disable auto-update in the playstore. Updated app will override the app installed in the system partition so even if the mod installation succeeds, you will not see it.</font></p>
+            break;
+        case APKTYPE.MAGISK:
+            <p class="lead">The official Magisk version downloads of YouTube Vanced</p>
+            <hr class="my-4">
+            <p>There are three ways to install the module via Magisk</p>
+            <p>Style 1</p>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Install from the Magisk repository (easiest but might be a little late on updates due to reasons...)
+                    <span class="badge badge-primary badge-pill">1</span>
+                </li>
+            </ul>
+            <p>Style 2</p>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Flash the magisk modules from the below downloads
+                    <span class="badge badge-primary badge-pill">1</span>
+                </li>
+            </ul>
+            <p>Style 3</p>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Install using magisk.plz or enable the magisk install in the settings.sh from the root installer files
+                    <span class="badge badge-primary badge-pill">1</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <p><a class="btn btn-primary" href="https://drive.google.com/drive/folders/1x67EYgPeLLSVzRfZyeLRCeWmbF-fUggd?usp=sharing">Root installer »</a></p>
+                    <span class="badge badge-primary badge-pill">2</span>
+                </li>
+            </ul>
+            <p><font size="3" color="red">Uninstall all YouTube updates and disable auto-update in the playstore. Updated app will override the app installed in the system partition so even if the mod installation succeeds, you will not see it.</font></p>
+            break;
+        default:
+            <p class="lead">The official Non-Root downloads of YouTube Vanced</p>
+            break;
+    }
 </div>
 
 @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
@@ -56,14 +138,14 @@
         </div>
         <h2>MicroG download</h2>
         <div class="microg">
-            @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" }, { "style", dlStyle } })
+            @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
         </div>
     }
 }
 
 <h2>@ViewBag.Title downloads</h2>
 <div class="public">
-    @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" }, { "style", dlStyle } })
+    @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
 </div>
 
 @if (dlStyle != DLTYPE.BASIC) {
@@ -80,29 +162,32 @@
         if (betas != null) {
             <h2>@ViewBag.Title beta downloads</h2>
             <div class="beta">
-                @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" }, { "style", dlStyle } })
+                @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
             </div>
         }
     }
 }
 
 @section scripts {
-    <script>
-        //$("#button-id").click(function () {
-        $("table").on('click', '#button-id', function (evt) {
-            var url = $(this).data("url");
-            var $this = $(this).find("label");
-            if (!$this.hasClass('active')) {
-                $this.text("Public");
-            }
-            else {
-                $this.text("Offline");
-            }
-            $.get(url, function (result) {
-                //do something with the result if you ever need to
+    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"))) {
+        <script>
+            $("table").on('click', '#button-id', function (evt) {
+                var url = $(this).data("url");
+                var $this = $(this).find("label");
+                if (!$this.hasClass('active')) {
+                    $this.text("Public");
+                }
+                else {
+                    $this.text("Offline");
+                }
+                $.get(url, function (result) {
+                    //do something with the result if you ever need to
 
+                });
             });
-        });
+        </script>
+    }
+    <script>
         $(function () {
             $("#public").dataTable({
                 "iDisplayLength": 5,
@@ -114,5 +199,34 @@
                 "order": [[1, "desc"]]
             });
         });
+    </script>
+    <script>
+        function addRowHandlers() {
+            var table = document.getElementById("public");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+                var cells = table.rows[i].cells;
+                for (var j = 0; j < Math.min(cells.length, 6); j++) {
+                    var clickableCell = cells[j];
+                    var row = rows[i];
+                    var url = row.dataset.url;
+
+                    if (url) {
+                        var createClickHandler =
+                            function (url) {
+                                return function () {
+                                    @if (Request.IsAuthenticated) {
+                                        @:alert("Download url: " + url);
+                                    }
+                                    window.location = url;
+                                };
+                            };
+
+                        clickableCell.onclick = createClickHandler(url);
+                    }
+                }
+            }
+        }
+        window.onload = addRowHandlers();
     </script>
 }
