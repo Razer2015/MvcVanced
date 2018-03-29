@@ -202,27 +202,30 @@
     </script>
     <script>
         function addRowHandlers() {
-            var table = document.getElementById("public");
-            var rows = table.getElementsByTagName("tr");
-            for (i = 0; i < rows.length; i++) {
-                var cells = table.rows[i].cells;
-                for (var j = 0; j < Math.min(cells.length, 6); j++) {
-                    var clickableCell = cells[j];
-                    var row = rows[i];
-                    var url = row.dataset.url;
+            var ids = ["public", "microg"];
+            for (var k = 0; k < ids.length; k++) {
+                var table = document.getElementById(ids[k]);
+                var rows = table.getElementsByTagName("tr");
+                for (i = 0; i < rows.length; i++) {
+                    var cells = table.rows[i].cells;
+                    for (var j = 0; j < Math.min(cells.length, 6); j++) {
+                        var clickableCell = cells[j];
+                        var row = rows[i];
+                        var url = row.dataset.url;
 
-                    if (url) {
-                        var createClickHandler =
-                            function (url) {
-                                return function () {
-                                    @if (Request.IsAuthenticated) {
-                                        @:alert("Download url: " + url);
-                                    }
-                                    window.location = url;
+                        if (url) {
+                            var createClickHandler =
+                                function (url) {
+                                    return function () {
+                                        @if (Request.IsAuthenticated) {
+                                            @:alert("Download url: " + url);
+                                        }
+                                        window.location = url;
+                                    };
                                 };
-                            };
 
-                        clickableCell.onclick = createClickHandler(url);
+                            clickableCell.onclick = createClickHandler(url);
+                        }
                     }
                 }
             }
