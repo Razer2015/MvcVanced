@@ -381,6 +381,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\APKs\_Entry_Basic.cshtml" />
+    <Content Include="Views\Home\Changelogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,10 @@ namespace MvcVanced.Controllers
             return View();
         }
 
+        public ActionResult Changelogs() {
+            return View();
+        }
+
         public ActionResult Contact() {
             ViewBag.Message = "How to reach us?";
 

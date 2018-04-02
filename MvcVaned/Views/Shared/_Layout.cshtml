@@ -132,6 +132,7 @@
                     </li>
                     @*<li class="nav-item">@Html.ActionLink("Downloads", "Index", "Download", null, new { @class = "nav-link" })</li>*@
                     @*<li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>*@
+                    <li class="nav-item">@Html.ActionLink("Changelogs", "Changelogs", "Home", null, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
                     @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
                         <li class="nav-item">@Html.ActionLink("Drive Files", "Index", "Drive", null, new { @class = "nav-link" })</li>

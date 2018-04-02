@@ -152,7 +152,7 @@
     <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
         <div class="card-body">
             <h4 class="card-title">Trouble downloading?</h4>
-            <p class="card-text">@Html.ActionLink("Try the basic version here.", "Index", "APKs", new { type = apkType, style = DLTYPE.BASIC }, null)</p>
+            <p class="card-text">@Html.ActionLink("Try the basic version here.", "Index", "APKs", new { type = apkType, style = DLTYPE.BASIC }, new { Style = "color:White;" })</p>
         </div>
     </div>
 }
@@ -202,7 +202,7 @@
     </script>
     <script>
         function addRowHandlers() {
-            var ids = ["public", "microg"];
+            var ids = ["public", "microg", "beta"];
             for (var k = 0; k < ids.length; k++) {
                 var table = document.getElementById(ids[k]);
                 var rows = table.getElementsByTagName("tr");
@@ -217,9 +217,9 @@
                             var createClickHandler =
                                 function (url) {
                                     return function () {
-                                        @if (Request.IsAuthenticated) {
+                                        @*@if (Request.IsAuthenticated) {
                                             @:alert("Download url: " + url);
-                                        }
+                                        }*@
                                         window.location = url;
                                     };
                                 };
