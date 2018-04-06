@@ -294,6 +294,7 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Content\Favicon\manifest.json" />
     <Content Include="Connected Services\Application Insights\ConnectedService.json" />
+    <None Include="Properties\PublishProfiles\iYTBP - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\iYTBP - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Vanced - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
