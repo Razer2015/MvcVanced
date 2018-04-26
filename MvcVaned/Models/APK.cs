@@ -21,7 +21,7 @@ namespace MvcVanced.Models
 
     public class APKDBContext : DbContext
     {
-        public APKDBContext() : base("name=DefaultConnection") {
+        public APKDBContext() : base(existingConnection: Helpers.GetRDSConnection(), contextOwnsConnection: true) {
         }
 
         public DbSet<APK> APKs { get; set; }

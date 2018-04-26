@@ -21,7 +21,7 @@ namespace MvcVanced.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base(existingConnection: Helpers.GetRDSConnection(), contextOwnsConnection: true)
         {
         }
 

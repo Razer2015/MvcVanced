@@ -40,15 +40,20 @@ namespace MvcVanced.Controllers
             var dbFiles = db.APKs.ToList();
             var files = Global.GoogleClient.FetchedFiles;
 
+            if (files == null) {
+                return View();
+            }
+
             var Ids = new HashSet<string>(dbFiles.Select(x => x.FileID));
             var Versions = new HashSet<string>(dbFiles.Select(x => x.Version));
-            var model = new DriveModel();
-            model.NonRoot = new List<DriveFile>(files["NONROOT"]);
-            model.NonRoot_Beta = new List<DriveFile>(files["NONROOT_BETA"]);
-            model.Root = new List<DriveFile>(files["ROOT"]);
-            model.Root_Beta = new List<DriveFile>(files["ROOT_BETA"]);
-            model.Magisk = new List<DriveFile>(files["MAGISK"]);
-            model.Magisk_Beta = new List<DriveFile>(files["MAGISK_BETA"]);
+            var model = new DriveModel {
+                NonRoot = new List<DriveFile>(files["NONROOT"]),
+                NonRoot_Beta = new List<DriveFile>(files["NONROOT_BETA"]),
+                Root = new List<DriveFile>(files["ROOT"]),
+                Root_Beta = new List<DriveFile>(files["ROOT_BETA"]),
+                Magisk = new List<DriveFile>(files["MAGISK"]),
+                Magisk_Beta = new List<DriveFile>(files["MAGISK_BETA"])
+            };
 
             model.NonRoot.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));
             model.NonRoot_Beta.RemoveAll(p => Ids.Contains(p.FileID) && Versions.Contains(p.Version));

@@ -58,12 +58,16 @@ namespace MvcVanced
             //app.UseFacebookAuthentication(
             //   appId: "",
             //   appSecret: "");
-
+            
             var appData = HttpContext.Current.Server.MapPath("~/App_Data/");
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions() {
-                ClientId = File.ReadAllText(Path.Combine(appData, "google_login_clientid.txt")),
-                ClientSecret = File.ReadAllText(Path.Combine(appData, "google_login_clientsecret.txt"))
-            });
+            if (File.Exists(Path.Combine(appData, "google_login_clientid.txt"))
+                && File.Exists(Path.Combine(appData, "google_login_clientsecret.txt"))) {
+
+                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions() {
+                    ClientId = File.ReadAllText(Path.Combine(appData, "google_login_clientid.txt")),
+                    ClientSecret = File.ReadAllText(Path.Combine(appData, "google_login_clientsecret.txt"))
+                });
+            }
         }
     }
 }

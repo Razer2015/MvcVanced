@@ -38,31 +38,37 @@ namespace GoogleDrive
 
         public Client(string app_data) {
             BasePath = app_data;
-            Connect();
         }
 
-        public void Connect() {
-            UserCredential credential;
+        public bool Connect() {
+            try {
+                UserCredential credential;
 
-            using (var stream =
-                new FileStream(Path.Combine(BasePath, "client_secret.json"), FileMode.Open, FileAccess.Read)) {
-                string credPath = BasePath;
-                credPath = Path.Combine(credPath, ".credentials/drive-dotnet-vanced.json");
+                using (var stream =
+                    new FileStream(Path.Combine(BasePath, "client_secret.json"), FileMode.Open, FileAccess.Read)) {
+                    string credPath = BasePath;
+                    credPath = Path.Combine(credPath, ".credentials/drive-dotnet-vanced.json");
 
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Debug.WriteLine("Credential file saved to: " + credPath);
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Debug.WriteLine("Credential file saved to: " + credPath);
+                }
+
+                // Create Drive API service.
+                Service = new DriveService(new BaseClientService.Initializer() {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+
+                return (true);
             }
-
-            // Create Drive API service.
-            Service = new DriveService(new BaseClientService.Initializer() {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
+            catch { // Error is most likely due to not having the correct client_secret.json
+                return (false);
+            }
         }
 
         #region Changes

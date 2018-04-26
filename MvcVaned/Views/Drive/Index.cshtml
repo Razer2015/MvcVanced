@@ -3,14 +3,17 @@
 
 @{
     ViewBag.Title = "Google Drive";
-
 }
 
 <div class="jumbotron">
     <h1>Untracked Google Drive files</h1>
 </div>
 
-@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
+@if (Model == null) {
+    <p>Error connecting to Google Drive or no files found.</p>
+}
+
+@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")) && Model != null) {
 
     <p>@Html.ActionLink("Refresh", "Refresh", "Drive", null, new { @class = "btn btn-default" })</p>
 
