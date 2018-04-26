@@ -57,6 +57,7 @@ namespace MvcVanced.Changelogs
                 new Change() { Title = "13.14.01", Changes = new string[] { "Build 1", "Build 2" } },
                 new Change() { Title = "13.14.02", Changes = new string[] { "Build 3" } }
             };
+            Directory.CreateDirectory(VersionPath);
             File.WriteAllText(Path.Combine(VersionPath, "changes.json"), JsonConvert.SerializeObject(Version));
         }
     }
