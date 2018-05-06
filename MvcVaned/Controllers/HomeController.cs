@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace MvcVanced.Controllers
 {
@@ -18,10 +14,9 @@ namespace MvcVanced.Controllers
             return View();
         }
 
-        public ActionResult Changelogs(CHANGELOG_TYPE changelog = CHANGELOG_TYPE.VERSION) {
+        public ActionResult Changelogs(CHANGELOG_TYPE changelog = CHANGELOG_TYPE.BUILD) {
             var changelogs = MvcVanced.Changelogs.Changelog.GetChangelogs(changelog);
-            changelogs.Reverse();
-
+            
             ViewBag.Type = changelog;
             
             return View(changelogs);

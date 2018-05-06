@@ -28,18 +28,21 @@ namespace MvcVanced.Changelogs
                     case CHANGELOG_TYPE.VERSION:
                         if (Version == null || VersionNeedsUpdate) {
                             Version = JsonConvert.DeserializeObject<List<Change>>(File.ReadAllText(Path.Combine(VersionPath, "changes.json")));
+                            Version.Reverse();
                             VersionNeedsUpdate = false;
                         }
                         return (Version);
                     case CHANGELOG_TYPE.BUILD:
                         if (Build == null || BuildNeedsUpdate) {
                             Build = JsonConvert.DeserializeObject<List<Change>>(File.ReadAllText(Path.Combine(BuildPath, "changes.json")));
+                            Build.Reverse();
                             BuildNeedsUpdate = false;
                         }
                         return (Build);
                     case CHANGELOG_TYPE.THEME:
                         if (Theme == null || ThemeNeedsUpdate) {
                             Theme = JsonConvert.DeserializeObject<List<Change>>(File.ReadAllText(Path.Combine(ThemePath, "changes.json")));
+                            Theme.Reverse();
                             ThemeNeedsUpdate = false;
                         }
                         return (Theme);

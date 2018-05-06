@@ -3,19 +3,41 @@
     ViewBag.Title = "Changelogs";
 
     int active = 0;
+    var selectedType = CHANGELOG_TYPE.VERSION;
     if (ViewBag.Type != null) {
         switch (((CHANGELOG_TYPE)ViewBag.Type)) {
             case CHANGELOG_TYPE.VERSION:
                 active = 0;
+                selectedType = CHANGELOG_TYPE.VERSION;
                 break;
             case CHANGELOG_TYPE.BUILD:
                 active = 1;
+                selectedType = CHANGELOG_TYPE.BUILD;
                 break;
             case CHANGELOG_TYPE.THEME:
                 active = 2;
+                selectedType = CHANGELOG_TYPE.THEME;
                 break;
         }
     }
+}
+
+@section Styles {
+    <style>
+        @@keyframes highlight {
+            0% {
+                background: red
+            }
+
+            100% {
+                background: none;
+            }
+        }
+
+        section:target {
+            animation: highlight 5s;
+        }
+    </style>
 }
 
 <div class="jumbotron">
@@ -25,36 +47,51 @@
 </div>
 
 <div class="dropdown">
+    Select which type of changelog:
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-        Dropdown Example
+        @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(selectedType.ToString().ToLower())
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        @*<li><a href="#">Version</a></li>
-        <li><a href="#">Build</a></li>
-        <li><a href="#">Theme</a></li>*@
-
         <li>@Html.ActionLink("Version", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.VERSION }, new { @class = $"{((active == 0) ? "dropdown-item active" : "dropdown-item")}" })</li>
-        <li>@Html.ActionLink("Version", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.BUILD }, new { @class = $"{((active == 1) ? "dropdown-item active" : "dropdown-item")}" })</li>
-        <li>@Html.ActionLink("Version", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.THEME }, new { @class = $"{((active == 2) ? "dropdown-item active" : "dropdown-item")}" })</li>
+        <li>@Html.ActionLink("Build", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.BUILD }, new { @class = $"{((active == 1) ? "dropdown-item active" : "dropdown-item")}" })</li>
+        <li>@Html.ActionLink("Theme", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.THEME }, new { @class = $"{((active == 2) ? "dropdown-item active" : "dropdown-item")}" })</li>
     </ul>
 </div>
-
+<hr />
 @{
+    if (Model == null) {
+        <p>No changelogs found.</p>
+        return;
+    }
     foreach (var changelog in Model) {
         int totalChanges = 1;
-        <p><strong>@changelog.Title</strong></p>
-        <div>
-            <ul class="list-group">
-                @foreach (var change in changelog.Changes) {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @change
-                        <span class="badge badge-primary badge-pill">@totalChanges</span>
-                    </li>
-                    totalChanges++;
-                }
-            </ul>
-        </div>
+        <section id="@changelog.Title">
+            <p><strong>@changelog.Title</strong></p>
+            <div>
+                <ul class="list-group">
+                    @foreach (var change in changelog.Changes) {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @if (change.StartsWith("#")) {
+                                if (change.StartsWith("#Build")) {
+                                    var buildNum = change.Remove(0, 6).Trim(' ');
+                                    @Html.ActionLink($"Build {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.BUILD }, null)
+                                }
+                                else if (change.StartsWith("#Theme")) {
+                                    var buildNum = change.Remove(0, 6).Trim(' ');
+                                    @Html.ActionLink($"Theme {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.THEME }, null)
+                                }
+                            }
+                            else {
+                                @change
+                            }
+                            <span class="badge badge-primary badge-pill">@totalChanges</span>
+                        </li>
+                        totalChanges++;
+                    }
+                </ul>
+            </div>
+        </section>
     }
 }
 
