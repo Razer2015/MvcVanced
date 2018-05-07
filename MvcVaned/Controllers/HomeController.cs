@@ -14,9 +14,9 @@ namespace MvcVanced.Controllers
             return View();
         }
 
-        public ActionResult Changelogs(CHANGELOG_TYPE changelog = CHANGELOG_TYPE.BUILD) {
+        public ActionResult Changelogs(CHANGELOG_TYPE changelog = CHANGELOG_TYPE.VERSION) {
             var changelogs = MvcVanced.Changelogs.Changelog.GetChangelogs(changelog);
-            
+
             ViewBag.Type = changelog;
             
             return View(changelogs);

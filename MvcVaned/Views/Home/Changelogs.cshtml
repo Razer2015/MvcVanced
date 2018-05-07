@@ -1,4 +1,8 @@
-﻿@model List<MvcVanced.Changelogs.Models.Change>
+﻿@using System.Text.RegularExpressions;
+@using MvcVanced.Helpers;
+
+@model List<MvcVanced.Changelogs.Models.Change>
+
 @{
     ViewBag.Title = "Changelogs";
 
@@ -72,19 +76,20 @@
                 <ul class="list-group">
                     @foreach (var change in changelog.Changes) {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            @if (change.StartsWith("#")) {
-                                if (change.StartsWith("#Build")) {
-                                    var buildNum = change.Remove(0, 6).Trim(' ');
-                                    @Html.ActionLink($"Build {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.BUILD }, null)
+                            <span>@Html.Raw(HttpUtility.HtmlDecode(change.ParseLinks()))</span>
+                            @*@if (change.StartsWith("#")) {
+                                    if (change.StartsWith("#Build")) {
+                                        var buildNum = change.Remove(0, 6).Trim(' ');
+                                        @Html.ActionLink($"Build {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.BUILD }, null)
+                                    }
+                                    else if (change.StartsWith("#Theme")) {
+                                        var buildNum = change.Remove(0, 6).Trim(' ');
+                                        @Html.ActionLink($"Theme {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.THEME }, null)
+                                    }
                                 }
-                                else if (change.StartsWith("#Theme")) {
-                                    var buildNum = change.Remove(0, 6).Trim(' ');
-                                    @Html.ActionLink($"Theme {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.THEME }, null)
-                                }
-                            }
-                            else {
-                                @change
-                            }
+                                else {
+                                    @change
+                                }*@
                             <span class="badge badge-primary badge-pill">@totalChanges</span>
                         </li>
                         totalChanges++;
