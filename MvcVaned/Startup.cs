@@ -14,6 +14,15 @@ namespace MvcVanced
     {
 
         public Startup() {
+            Changelogs.Changelog.VersionPath = HttpContext.Current.Server.MapPath("~/App_Data/Changelogs/VersionChanges/");
+            Changelogs.Changelog.BuildPath = HttpContext.Current.Server.MapPath("~/App_Data/Changelogs/BuildChanges/");
+            Changelogs.Changelog.ThemePath = HttpContext.Current.Server.MapPath("~/App_Data/Changelogs/ThemeChanges/");
+
+            new Watcher().Run(Changelogs.Changelog.VersionPath, CHANGELOG_TYPE.VERSION);
+            new Watcher().Run(Changelogs.Changelog.BuildPath, CHANGELOG_TYPE.BUILD);
+            new Watcher().Run(Changelogs.Changelog.ThemePath, CHANGELOG_TYPE.THEME);
+            //Changelogs.Changelog.GenerateExampleData();
+
             Global.GoogleClient = new GoogleDrive.Client(HttpContext.Current.Server.MapPath("~/App_Data/"));
             if (Global.GoogleClient.Connect()) {
                 new Thread(() =>

@@ -193,6 +193,10 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Changelogs\Changelog.cs" />
+    <Compile Include="Changelogs\Models\Change.cs" />
+    <Compile Include="Changelogs\Watcher.cs" />
+    <Compile Include="CHANGELOG_TYPE.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\APKsController.cs" />

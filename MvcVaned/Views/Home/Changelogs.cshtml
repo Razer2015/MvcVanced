@@ -1,5 +1,47 @@
-﻿@{
+﻿@using System.Text.RegularExpressions;
+@using MvcVanced.Helpers;
+
+@model List<MvcVanced.Changelogs.Models.Change>
+
+@{
     ViewBag.Title = "Changelogs";
+
+    int active = 0;
+    var selectedType = CHANGELOG_TYPE.VERSION;
+    if (ViewBag.Type != null) {
+        switch (((CHANGELOG_TYPE)ViewBag.Type)) {
+            case CHANGELOG_TYPE.VERSION:
+                active = 0;
+                selectedType = CHANGELOG_TYPE.VERSION;
+                break;
+            case CHANGELOG_TYPE.BUILD:
+                active = 1;
+                selectedType = CHANGELOG_TYPE.BUILD;
+                break;
+            case CHANGELOG_TYPE.THEME:
+                active = 2;
+                selectedType = CHANGELOG_TYPE.THEME;
+                break;
+        }
+    }
+}
+
+@section Styles {
+    <style>
+        @@keyframes highlight {
+            0% {
+                background: red
+            }
+
+            100% {
+                background: none;
+            }
+        }
+
+        section:target {
+            animation: highlight 5s;
+        }
+    </style>
 }
 
 <div class="jumbotron">
@@ -8,167 +50,217 @@
     <p><cite>Note: Will improve this page at a later date.</cite></p>
 </div>
 
-<p><strong>Additional changes in 13.11.57</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Google has done some improvements/bug fixes to the new minimized video type style (Actually in 13.11.56).
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
+<div class="dropdown">
+    Select which type of changelog:
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(selectedType.ToString().ToLower())
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>@Html.ActionLink("Version", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.VERSION }, new { @class = $"{((active == 0) ? "dropdown-item active" : "dropdown-item")}" })</li>
+        <li>@Html.ActionLink("Build", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.BUILD }, new { @class = $"{((active == 1) ? "dropdown-item active" : "dropdown-item")}" })</li>
+        <li>@Html.ActionLink("Theme", "Changelogs", "Home", new { changelog = CHANGELOG_TYPE.THEME }, new { @class = $"{((active == 2) ? "dropdown-item active" : "dropdown-item")}" })</li>
     </ul>
 </div>
-<p><strong>Patch v18.2</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Chinese (Traditional) translations
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v18.1</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Arabic, Dutch, French, German, Greek, Portuguese (Brazil), Russian, Spanish translations
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v18.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Possible navbar color fix for Samsung
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Zoom to Fit for Vertical view (New feature, test how it works)
-            <span class="badge badge-primary badge-pill">2</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added option to enable new navbar (Full Width Search)
-            <span class="badge badge-primary badge-pill">3</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Fixed: new minimized video type
-            <span class="badge badge-primary badge-pill">4</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v17.4</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Navbar color fix for Oreo runtime theme (except Samsung)
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v17.3</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Performance improvements
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v17.2</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added ExoPlayer V2 Warning
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v17.1</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added bad Finnish translations
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v17.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added cast button remover
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v16.2</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Refactored refresh icon background patch
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added patch for quantum text (Dark theme switch)
-            <span class="badge badge-primary badge-pill">2</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v16.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added preferred speed options
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Refactoring some code and strings
-            <span class="badge badge-primary badge-pill">2</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v15.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added translation support
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v14.2</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Dark App Title (YouTubes's unfinished Black Theme)
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v14.1</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Exoplayer V2 toggle (Google's experimental player)
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v14.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added Buffer Policy settings
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
-<p><strong>Patch v13.0</strong></p>
-<div>
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            - Added HDR Full Brightness toggle
-            <span class="badge badge-primary badge-pill">1</span>
-        </li>
-    </ul>
-</div>
+<hr />
+@{
+    if (Model == null) {
+        <p>No changelogs found.</p>
+        return;
+    }
+    foreach (var changelog in Model) {
+        int totalChanges = 1;
+        <section id="@changelog.Title">
+            <p><strong>@changelog.Title</strong></p>
+            <div>
+                <ul class="list-group">
+                    @foreach (var change in changelog.Changes) {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>@Html.Raw(HttpUtility.HtmlDecode(change.ParseLinks()))</span>
+                            @*@if (change.StartsWith("#")) {
+                                    if (change.StartsWith("#Build")) {
+                                        var buildNum = change.Remove(0, 6).Trim(' ');
+                                        @Html.ActionLink($"Build {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.BUILD }, null)
+                                    }
+                                    else if (change.StartsWith("#Theme")) {
+                                        var buildNum = change.Remove(0, 6).Trim(' ');
+                                        @Html.ActionLink($"Theme {buildNum}", "Changelogs", "Home", null, null, buildNum, new { changelog = CHANGELOG_TYPE.THEME }, null)
+                                    }
+                                }
+                                else {
+                                    @change
+                                }*@
+                            <span class="badge badge-primary badge-pill">@totalChanges</span>
+                        </li>
+                        totalChanges++;
+                    }
+                </ul>
+            </div>
+        </section>
+    }
+}
+
+@*<p><strong>Additional changes in 13.11.57</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Google has done some improvements/bug fixes to the new minimized video type style (Actually in 13.11.56).
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v18.2</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Chinese (Traditional) translations
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v18.1</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Arabic, Dutch, French, German, Greek, Portuguese (Brazil), Russian, Spanish translations
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v18.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Possible navbar color fix for Samsung
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Zoom to Fit for Vertical view (New feature, test how it works)
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added option to enable new navbar (Full Width Search)
+                <span class="badge badge-primary badge-pill">3</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Fixed: new minimized video type
+                <span class="badge badge-primary badge-pill">4</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v17.4</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Navbar color fix for Oreo runtime theme (except Samsung)
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v17.3</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Performance improvements
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v17.2</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added ExoPlayer V2 Warning
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v17.1</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added bad Finnish translations
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v17.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added cast button remover
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v16.2</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Refactored refresh icon background patch
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added patch for quantum text (Dark theme switch)
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v16.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added preferred speed options
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Refactoring some code and strings
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v15.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added translation support
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v14.2</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Dark App Title (YouTubes's unfinished Black Theme)
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v14.1</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Exoplayer V2 toggle (Google's experimental player)
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v14.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added Buffer Policy settings
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>
+    <p><strong>Patch v13.0</strong></p>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                - Added HDR Full Brightness toggle
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        </ul>
+    </div>*@
