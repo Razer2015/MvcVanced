@@ -126,8 +126,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav">
-                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item @Html.IsSelected(action: "Index", controller: "Home")">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item dropdown @Html.IsSelected(action: "Index", controller: "APKs")">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Downloads</a>
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
                             <a>@Html.ActionLink("Non-Root", "Index", "APKs", new { type = APKTYPE.NONROOT }, new { @class = $"{((downloadType == "NONROOT") ? "dropdown-item active" : "dropdown-item")}" })</a>
@@ -137,14 +137,14 @@
                     </li>
                     @*<li class="nav-item">@Html.ActionLink("Downloads", "Index", "Download", null, new { @class = "nav-link" })</li>*@
                     @*<li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>*@
-                    <li class="nav-item">@Html.ActionLink("Changelogs", "Changelogs", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item @Html.IsSelected(action: "Changelogs", controller: "Home")">@Html.ActionLink("Changelogs", "Changelogs", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item @Html.IsSelected(action: "Contact", controller: "Home")">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
                     @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager"))) {
-                        <li class="nav-item">@Html.ActionLink("Drive Files", "Index", "Drive", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item @Html.IsSelected(action: "Index", controller: "Drive")">@Html.ActionLink("Drive Files", "Index", "Drive", null, new { @class = "nav-link" })</li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item @Html.IsSelected(action: "Index", controller: "Admin")">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item @Html.IsSelected(action: "Index", controller: "Users")">@Html.ActionLink("Users", "Index", "Users", null, new { @class = "nav-link" })</li>
                     }
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Theme</a>
