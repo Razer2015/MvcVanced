@@ -11,6 +11,10 @@ namespace MvcVanced.Models
 
             string dbname = appConfig["RDS_DB_NAME"];
 
+#if DEBUG
+            dbname = null;
+#endif
+
             if (!string.IsNullOrEmpty(dbname)) {
                 string username = appConfig["RDS_USERNAME"];
                 string password = appConfig["RDS_PASSWORD"];
