@@ -64,7 +64,7 @@ namespace MvcVanced.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Manager")]
-        public ActionResult Create([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public")] APK aPK)
+        public ActionResult Create([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public,Published")] APK aPK)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace MvcVanced.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Manager")]
-        public ActionResult Edit([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public")] APK aPK)
+        public ActionResult Edit([Bind(Include = "ID,Title,Version,Architecture,MinimumAPI,DPI,Size,Type,Downloads,FileID,Public,Published")] APK aPK)
         {
             if (ModelState.IsValid)
             {
@@ -162,7 +162,13 @@ namespace MvcVanced.Controllers
             }
 
             // Reverse the publicity
-            db.APKs.FirstOrDefault(x => x.FileID.Equals(fileId)).Public = !db.APKs.FirstOrDefault(x => x.FileID.Equals(fileId)).Public;
+            var entry = db.APKs.FirstOrDefault(x => x.FileID.Equals(fileId));
+            entry.Public = !entry.Public;
+            // Update published date, if published
+            if (entry.Public) {
+                entry.Published = DateTime.UtcNow;
+            }
+
             db.SaveChanges();
         }
 

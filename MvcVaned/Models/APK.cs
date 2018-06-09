@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace MvcVanced.Models
@@ -17,6 +18,7 @@ namespace MvcVanced.Models
         public int Downloads { get; set; }
         public string FileID { get; set; }
         public bool Public { get; set; }
+        public DateTime Published { get; set; }
     }
 
     public class APKDBContext : DbContext

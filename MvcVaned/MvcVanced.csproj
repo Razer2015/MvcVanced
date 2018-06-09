@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201803090933278_init.Designer.cs">
       <DependentUpon>201803090933278_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806090852182_published_time.cs" />
+    <Compile Include="Migrations\201806090852182_published_time.Designer.cs">
+      <DependentUpon>201806090852182_published_time.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\APK.cs" />
@@ -408,6 +412,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803090933278_init.resx">
       <DependentUpon>201803090933278_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806090852182_published_time.resx">
+      <DependentUpon>201806090852182_published_time.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
