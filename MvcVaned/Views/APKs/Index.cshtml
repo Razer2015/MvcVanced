@@ -137,14 +137,14 @@
             </div>
         </div>
         <h2>MicroG download</h2>
-        <div class="microg">
+        <div class="microg table-responsive">
             @Html.Partial("_Entries", (List<MvcVanced.Models.APK>)ViewBag.MicroG, new ViewDataDictionary { { "id", "microg" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
         </div>
     }
 }
 
 <h2>@ViewBag.Title downloads</h2>
-<div class="public">
+<div class="public table-responsive">
     @Html.Partial("_Entries", publics, new ViewDataDictionary { { "id", "public" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
 </div>
 
@@ -161,7 +161,7 @@
     if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Tester"))) {
         if (betas != null) {
             <h2>@ViewBag.Title beta downloads</h2>
-            <div class="beta">
+            <div class="beta table-responsive">
                 @Html.Partial("_Entries", betas, new ViewDataDictionary { { "id", "beta" }, { "style", dlStyle }, { "hashes", ViewBag.Hashes } })
             </div>
         }
