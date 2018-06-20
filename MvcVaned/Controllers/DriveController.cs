@@ -155,7 +155,8 @@ namespace MvcVanced.Controllers
                     Type = apkType,
                     Downloads = 0,
                     FileID = fileId,
-                    Public = false
+                    Public = false,
+                    Published = DateTime.UtcNow
                 };
                 db.APKs.Add(apk);
                 db.SaveChanges();
