@@ -403,6 +403,7 @@
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\APKs\_Entry_Basic.cshtml" />
     <Content Include="Views\Home\Changelogs.cshtml" />
+    <Content Include="InAppChangelogs\13_27_54.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
