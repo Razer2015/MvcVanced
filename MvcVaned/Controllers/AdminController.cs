@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using MvcVanced.Models;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace MvcVanced.Controllers
         public Boolean isAdminUser() {
             if (User.Identity.IsAuthenticated) {
                 var user = User.Identity;
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var s = UserManager.GetRoles(user.GetUserId());
                 if (s[0].ToString() == "Admin") {
                     return true;

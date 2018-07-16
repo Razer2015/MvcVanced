@@ -10,6 +10,7 @@ using MvcVanced.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MvcVanced.Controllers
 {
@@ -23,7 +24,7 @@ namespace MvcVanced.Controllers
             if (User.Identity.IsAuthenticated) {
                 var user = User.Identity;
                 ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var s = UserManager.GetRoles(user.GetUserId());
                 if (s != null && s.Count > 0 && s[0].ToString() == "Admin") {
                     return true;
@@ -45,7 +46,7 @@ namespace MvcVanced.Controllers
                 if (isAdminUser()) {
                     ViewBag.displayMenu = "Yes";
 
-                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                    var UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
                     //var s = UserManager.GetRoles(userIdentity.GetUserId());
 
@@ -77,7 +78,7 @@ namespace MvcVanced.Controllers
                     if (id == null) {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                    var UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                     var users = UserManager.Users;
 
                     if (!users.Any(x => x.Id.Equals(id))) {
@@ -120,7 +121,8 @@ namespace MvcVanced.Controllers
             ViewBag.Name = new SelectList(rolesList, "Name", "Name");
 
             if (ModelState.IsValid) {
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
                 // get user object from the storage
                 var user = await userManager.FindByIdAsync(model.Id);
 
@@ -133,7 +135,7 @@ namespace MvcVanced.Controllers
                 user.Email = model.Email;
 
                 // Persiste the changes
-                await userManager.UpdateAsync(user);
+                var rr = await userManager.UpdateAsync(user);
 
                 // Retrieve all roles
                 var allRoles = context.Roles.ToList().Select(x => x.Name).ToArray();
@@ -171,7 +173,7 @@ namespace MvcVanced.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = await userManager.FindByIdAsync(id);
 
             if (user == null) {
@@ -185,7 +187,7 @@ namespace MvcVanced.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(string id) {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = await userManager.FindByIdAsync(id);
             var result = await userManager.DeleteAsync(user);
 
