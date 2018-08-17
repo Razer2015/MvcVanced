@@ -27,14 +27,20 @@ namespace MvcVanced.Controllers
             ViewBag.Type = type;
             ViewBag.Style = ((GetIsJavascriptOn() ? style : DLTYPE.BASIC));
             if (type == APKTYPE.NONROOT) {
-                var xd = db.APKs.ToList().Where(x => x.Type.Equals(APKTYPE.MICROG)).ToList();
-                ViewBag.MicroG = xd;
+                if (Global.MicroGCache == null) {
+                    Global.MicroGCache = db.APKs.ToList().Where(x => x.Type.Equals(APKTYPE.MICROG)).ToList();
+                }
+                ViewBag.MicroG = Global.MicroGCache;
             }
             if (Global.GoogleClient?.FetchedFiles != null && Global.GoogleClient.FetchedFiles.ContainsKey(type.ToString())) {
                 ViewBag.Hashes = Global.GoogleClient.FetchedFiles[type.ToString()];
             }
 
-            return View(db.APKs.ToList().OrderByDescending(x => x.Version ).ThenBy(x => x.Architecture));
+            if (Global.APKCache == null) {
+                Global.APKCache = db.APKs.ToList().OrderByDescending(x => x.Version).ThenBy(x => x.Architecture);
+            }
+            
+            return View(Global.APKCache);
         }
 
         // GET: APKs/Details/5
@@ -70,6 +76,9 @@ namespace MvcVanced.Controllers
             {
                 db.APKs.Add(aPK);
                 db.SaveChanges();
+
+                RefreshAPKCache();
+
                 return RedirectToAction("Index");
             }
 
@@ -104,6 +113,9 @@ namespace MvcVanced.Controllers
             {
                 db.Entry(aPK).State = EntityState.Modified;
                 db.SaveChanges();
+
+                RefreshAPKCache();
+
                 return RedirectToAction("Index");
             }
             return View(aPK);
@@ -134,6 +146,9 @@ namespace MvcVanced.Controllers
             APK aPK = db.APKs.Find(id);
             db.APKs.Remove(aPK);
             db.SaveChanges();
+
+            RefreshAPKCache();
+
             return RedirectToAction("Index");
         }
 
@@ -170,6 +185,13 @@ namespace MvcVanced.Controllers
             }
 
             db.SaveChanges();
+
+            RefreshAPKCache();
+        }
+
+        public void RefreshAPKCache() {
+            Global.APKCache = null;
+            Global.MicroGCache = null;
         }
 
         protected override void Dispose(bool disposing)
