@@ -192,11 +192,13 @@ namespace MvcVanced.Controllers
             if (Architectures.Any(x => title.Contains(x))) {
                 var matches = Architectures.Where(x => title.Contains(x)).ToList();
 
-                if (matches.Contains("x86_64") && Regex.Matches(title, "x86").Count <= 1) {
-                    matches.Remove("x86");
-                }
+                if (matches.Count != 4) {
+                    if (matches.Contains("x86_64") && Regex.Matches(title, "x86").Count <= 1) {
+                        matches.Remove("x86");
+                    }
 
-                name = string.Join("/", matches);
+                    name = string.Join("/", matches);
+                }
             }
             return (name);
         }

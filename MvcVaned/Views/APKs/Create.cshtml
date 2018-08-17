@@ -120,7 +120,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
+            var today = new Date();
+            $('.datepicker').val(today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
             $('.datepicker').datepicker({
+                dateFormat: 'dd/mm/yy',
                 minDate: new Date(2018, 1 - 1, 1)
             });
         });

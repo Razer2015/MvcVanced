@@ -18,6 +18,7 @@ namespace MvcVanced.Models
         public int Downloads { get; set; }
         public string FileID { get; set; }
         public bool Public { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Published { get; set; }
     }
 
